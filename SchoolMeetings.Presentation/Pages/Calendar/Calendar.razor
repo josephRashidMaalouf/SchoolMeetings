@@ -31,14 +31,13 @@
             {
                 <div/>
             }
-            @for (int i = 1; i <= ViewModel.Month.MonthEnd.Day; i++)
+            @foreach (var day in ViewModel.Month.Days)
             {
-                
-                if (ViewModel.Month.DateOfToday.Day == i)
+                if (ViewModel.Month.DateOfToday.Day == day.Date)
                 {
                     <div class="text-center today">
-                        @i
-                        @if (ViewModel.Month.BookableDates.Any(d => d == i))
+                        @day.Date
+                        @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
                         {
                             <Badge Color="BadgeColor.Danger">
                                 @ViewModel.Month.BookableDates.Count;
@@ -49,12 +48,12 @@
 
                 }
                 <div class="text-center">
-                    @i
-                    @if (ViewModel.Month.BookableDates.Any(d => d == i))
+                    @day.Date
+                    @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
                     {
-                        <Badge 
-                            Color="BadgeColor.Danger"
-                               IndicatorType="BadgeIndicatorType.RoundedPill">1
+                        <Badge Color="BadgeColor.Danger"
+                               IndicatorType="BadgeIndicatorType.RoundedPill">
+                            1
                         </Badge>
                     }
                 </div>

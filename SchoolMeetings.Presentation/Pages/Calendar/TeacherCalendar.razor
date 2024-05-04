@@ -1,7 +1,4 @@
 ﻿@page "/teacher-calendar"
-
-
-
 @inject TeacherCalendarViewModel ViewModel
 
 <h3>TeacherCalendar</h3>
@@ -33,14 +30,14 @@
             {
                 <div />
             }
-            @for (int i = 1; i <= ViewModel.Month.MonthEnd.Day; i++)
+           
+            @foreach (var day in ViewModel.Month.Days)
             {
-
-                if (ViewModel.Month.DateOfToday.Day == i)
+                if (ViewModel.Month.DateOfToday.Day == day.Date)
                 {
-                    <div class="text-center today">
-                        @i
-                        @if (ViewModel.Month.BookableDates.Any(d => d == i))
+                    <div class="text-center today" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
+                        @day.Date
+                        @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
                         {
                             <Badge Color="BadgeColor.Danger">
                                 @ViewModel.Month.BookableDates.Count;
@@ -50,9 +47,9 @@
                     continue;
 
                 }
-                <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(i)">
-                    @i
-                    @if (ViewModel.Month.BookableDates.Any(d => d == i))
+                <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
+                    @day.Date
+                    @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
                     {
                         <Badge Color="BadgeColor.Danger"
                                IndicatorType="BadgeIndicatorType.RoundedPill">

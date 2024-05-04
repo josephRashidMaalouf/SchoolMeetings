@@ -1,9 +1,9 @@
 ﻿@page "/create-meetings/{SelectedDate}"
 @using Shared.Models.Calendar
 
-<p>Lets create a meeting! Selected date: @SelectedDate.Day @SelectedDate.Month @SelectedDate.Year</p>
+<p>Lets create a meeting! Selected date: @SelectedDate</p>
 
 @code {
     [Parameter]
-    public DayModel SelectedDate { get; set; }
+    public string? SelectedDate { get; set; }
 }

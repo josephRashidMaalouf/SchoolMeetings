@@ -1,4 +1,6 @@
-﻿namespace Shared.Models.Calendar;
+﻿using Shared.Models.Calendar;
+
+namespace SchoolMeetings.Presentation.Models.Calendar;
 
 public class MonthModel
 {
@@ -8,5 +10,6 @@ public class MonthModel
     public int NumOfDummyColumns { get; set; }
     public DateTime DateOfToday { get; set; }
     public List<int> BookableDates { get; set; } = new();
+    public List<DayModel> Days { get; set; } = new();
 
 }

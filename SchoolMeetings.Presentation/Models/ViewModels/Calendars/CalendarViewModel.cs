@@ -1,4 +1,5 @@
-﻿using Shared.Enums;
+﻿using SchoolMeetings.Presentation.Models.Calendar;
+using Shared.Enums;
 using Shared.Models.Calendar;
 
 namespace SchoolMeetings.Presentation.Models.ViewModels.Calendars;
@@ -11,6 +12,7 @@ public class CalendarViewModel
 
     public async Task GenerateMonth(int monthsAwayFromNow)
     {
+        Month = new MonthModel();
         Month.Year = DateTime.UtcNow.AddMonths(monthsAwayFromNow).Year.ToString();
 
         Month.DateOfToday = DateTime.UtcNow.Date;
@@ -24,6 +26,15 @@ public class CalendarViewModel
         Month.MonthName = Enum.GetName(typeof(MonthNames), monthStart.Month)!;
 
         Month.NumOfDummyColumns = (int)monthStart.DayOfWeek;
+
+        for (int i = 1; i <= Month.MonthEnd.Day; i++)
+        {
+            var day = new DayModel()
+            {
+                Date = i
+            };
+            Month.Days.Add(day);
+        }
 
     }
 
