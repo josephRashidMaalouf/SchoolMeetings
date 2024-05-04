@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -23,10 +23,15 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Calendar.razor" />
+    <_ContentIncludedByDefault Remove="Pages\TeacherPages\CreateMeetingsPage.razor" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\Shared\SchoolMeetings.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\TeacherPages\CreateMeetingsPage.razor" />
   </ItemGroup>
 
 </Project>

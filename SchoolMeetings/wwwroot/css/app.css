@@ -101,3 +101,23 @@ a, .btn-link {
 code {
     color: #c02d76;
 }
+
+.calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+    .calendar-body > div {
+        padding: 10px;
+    }
+
+        .calendar-body > div:hover {
+            background-color: dodgerblue;
+            color: white;
+            cursor: pointer;
+        }
+
+.today {
+    background-color: #0d6efd;
+    color: white;
+}

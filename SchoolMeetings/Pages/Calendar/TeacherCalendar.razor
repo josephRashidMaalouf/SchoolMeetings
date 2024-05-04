@@ -1,0 +1,80 @@
+﻿@page "/TeacherCalendar"
+
+
+@inject TeacherCalendarViewModel ViewModel
+
+<h3>TeacherCalendar</h3>
+<Card class="m-3">
+    <CardHeader Color="CardColor.Primary">
+        <div class="container">
+            <div class="row">
+
+                <div class="col text-center">
+                    <Button @onclick="ViewModel.GoToPrevMonth">
+                        <Icon Name="IconName.ArrowLeft" />
+                    </Button>
+                    @ViewModel.Month.MonthName @ViewModel.Month.Year
+                    <Button @onclick="ViewModel.GoToNextMonth">
+                        <Icon Name="IconName.ArrowRight" />
+                    </Button>
+                </div>
+
+            </div>
+        </div>
+    </CardHeader>
+    <CardBody>
+        <section class="calendar-body">
+            @for (int i = 0; i < 7; i++)
+            {
+                <b class="m-1 text-center">@Enum.GetName(typeof(WeekDayLetters), i)</b>
+            }
+            @for (int i = 0; i < ViewModel.Month.NumOfDummyColumns - 1; i++)
+            {
+                <div />
+            }
+            @for (int i = 1; i <= ViewModel.Month.MonthEnd.Day; i++)
+            {
+
+                if (ViewModel.Month.DateOfToday.Day == i)
+                {
+                    <div class="text-center today">
+                        @i
+                        @if (ViewModel.Month.BookableDates.Any(d => d == i))
+                        {
+                            <Badge Color="BadgeColor.Danger">
+                                @ViewModel.Month.BookableDates.Count;
+                            </Badge>
+                        }
+                    </div>
+                    continue;
+
+                }
+                <div class="text-center">
+                    @i
+                    @if (ViewModel.Month.BookableDates.Any(d => d == i))
+                    {
+                        <Badge Color="BadgeColor.Danger"
+                               IndicatorType="BadgeIndicatorType.RoundedPill">
+                            1
+                        </Badge>
+                    }
+                </div>
+            }
+        </section>
+    </CardBody>
+</Card>
+
+
+
+
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await ViewModel.GenerateMonth(0);
+
+    }
+
+}

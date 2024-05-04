@@ -1,5 +1,4 @@
-﻿@page "/calendar"
-@using Shared.Models.ViewModels
+﻿
 @inject CalendarViewModel ViewModel
 
 <Card class="m-3">
@@ -67,12 +66,6 @@
 
 
 @code {
-    // string monthName = string.Empty;
-    // DateTime monthEnd;
-    // string year = string.Empty;
-    // int numDummyColumn = 0;
-    // int monthsAway = 0;
-    // int yearsAway = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -80,48 +73,5 @@
         await ViewModel.GenerateMonth(0);
 
     }
-
-    // public async Task GoToPrevMonth()
-    // {
-    //     monthsAway--;
-    //     await CreateMonth(monthsAway);
-    // }
-
-    // public async Task GoToNextMonth()
-    // {
-    //     monthsAway++;
-    //     await CreateMonth(monthsAway);
-    // }
-
-    // public async Task CreateMonth(int monthsAwayFromNow)
-    // {
-
-    //     year = DateTime.UtcNow.AddMonths(monthsAwayFromNow).Year.ToString();
-
-    //     DateTime monthStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1)
-    //         .AddMonths(monthsAway);
-    //     monthEnd = monthStart
-    //         .AddMonths(1)
-    //         .AddDays(-1);
-
-    //     monthName = monthStart.Month switch
-    //     {
-    //         1 => "Januari",
-    //         2 => "Februari",
-    //         3 => "Mars",
-    //         4 => "April",
-    //         5 => "Maj",
-    //         6 => "Juni",
-    //         7 => "Juli",
-    //         8 => "Augusti",
-    //         9 => "September",
-    //         10 => "Oktober",
-    //         11 => "November",
-    //         12 => "December",
-    //         _ => ""
-    //     };
-
-    //     numDummyColumn = (int)monthStart.DayOfWeek;
-    // }
 
 }

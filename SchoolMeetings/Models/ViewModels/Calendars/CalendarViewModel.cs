@@ -1,7 +1,8 @@
 ﻿using Shared.Enums;
+using Shared.Managers;
 using Shared.Models.Calendar;
 
-namespace Shared.Models.ViewModels;
+namespace Shared.Models.ViewModels.Calendars;
 
 public class CalendarViewModel
 {
@@ -25,8 +26,8 @@ public class CalendarViewModel
 
         Month.NumOfDummyColumns = (int)monthStart.DayOfWeek;
 
-        Month.BookableDates.AddRange([1, 5, 3]);
     }
+
 
     public async Task GoToPrevMonth()
     {
