@@ -1,12 +1,15 @@
-﻿@using SchoolMeetings.Presentation.Models.ViewModels.Calendars
+﻿@page "/teacher-calendar"
 
-@inject CalendarViewModel ViewModel
 
+
+@inject TeacherCalendarViewModel ViewModel
+
+<h3>TeacherCalendar</h3>
 <Card class="m-3">
-    <CardHeader  Color="CardColor.Primary">
+    <CardHeader Color="CardColor.Primary">
         <div class="container">
             <div class="row">
-                
+
                 <div class="col text-center">
                     <Button @onclick="ViewModel.GoToPrevMonth">
                         <Icon Name="IconName.ArrowLeft" />
@@ -16,7 +19,7 @@
                         <Icon Name="IconName.ArrowRight" />
                     </Button>
                 </div>
-                
+
             </div>
         </div>
     </CardHeader>
@@ -28,11 +31,11 @@
             }
             @for (int i = 0; i < ViewModel.Month.NumOfDummyColumns - 1; i++)
             {
-                <div/>
+                <div />
             }
             @for (int i = 1; i <= ViewModel.Month.MonthEnd.Day; i++)
             {
-                
+
                 if (ViewModel.Month.DateOfToday.Day == i)
                 {
                     <div class="text-center today">
@@ -47,13 +50,13 @@
                     continue;
 
                 }
-                <div class="text-center">
+                <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(i)">
                     @i
                     @if (ViewModel.Month.BookableDates.Any(d => d == i))
                     {
-                        <Badge 
-                            Color="BadgeColor.Danger"
-                               IndicatorType="BadgeIndicatorType.RoundedPill">1
+                        <Badge Color="BadgeColor.Danger"
+                               IndicatorType="BadgeIndicatorType.RoundedPill">
+                            1
                         </Badge>
                     }
                 </div>

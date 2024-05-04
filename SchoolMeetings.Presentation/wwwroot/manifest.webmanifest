@@ -1,6 +1,6 @@
 {
   "name": "SchoolMeetings.Presentation",
-  "short_name": "SchoolMeetings",
+  "short_name": "SchoolMeetings.Presentation",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
