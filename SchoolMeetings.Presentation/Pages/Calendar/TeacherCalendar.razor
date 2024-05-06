@@ -1,8 +1,9 @@
 ﻿@page "/teacher-calendar"
 @inject TeacherCalendarViewModel ViewModel
 
-<h3>TeacherCalendar</h3>
-<Card class="m-3">
+<h3 class="m-3">Din kalender</h3>
+
+<Card class="m-3" style="max-width: 400px;">
     <CardHeader Color="CardColor.Primary">
         <div class="container">
             <div class="row">
@@ -30,7 +31,7 @@
             {
                 <div />
             }
-           
+
             @foreach (var day in ViewModel.Month.Days)
             {
                 if (ViewModel.Month.DateOfToday.Day == day.Date)
@@ -61,6 +62,7 @@
         </section>
     </CardBody>
 </Card>
+
 
 
 

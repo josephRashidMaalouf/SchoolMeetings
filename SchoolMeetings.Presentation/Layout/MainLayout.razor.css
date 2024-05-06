@@ -1,4 +1,11 @@
-.page {
+.my-main-content{
+    margin: 20px;
+    padding: 20px;
+}
+
+
+
+/*.page {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -75,3 +82,4 @@ main {
         padding-right: 1.5rem !important;
     }
 }
+*/
