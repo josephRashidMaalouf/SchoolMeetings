@@ -7,12 +7,12 @@ namespace SchoolMeetings.Presentation.Models.ViewModels.TeacherViewModels;
 
 public class CreateMeetingsViewModel
 {
-    public DateTime SelectedDate { get; set; }
 
+    public DateTime SelectedDate { get; set; }
     public List<MeetingModel> FreeTimeSlots { get; set; } = new();
     public List<MeetingModel> BookedTimeSlots { get; set; } = new();
 
-
+    //TODO: Create methods for adding, updating and deleting meetings
 
 
 }
