@@ -1,4 +1,5 @@
 ﻿using SchoolMeetings.Presentation.Models.ViewModels.Calendars;
+using SchoolMeetings.Presentation.Models.ViewModels.TeacherViewModels;
 
 namespace SchoolMeetings.Presentation.DependencyInjection;
 
@@ -9,6 +10,7 @@ public static class InjectViewModels
         //TODO: Probably remove the calendarViewmodel later since it is only meant to be a baseclass
         services.AddScoped<CalendarViewModel>();
         services.AddScoped<TeacherCalendarViewModel>();
+        services.AddScoped<CreateMeetingsViewModel>();
 
         return services;
     }
