@@ -1,9 +1,20 @@
 ﻿@page "/create-meetings/{SelectedDate}"
-@using Shared.Models.Calendar
+@inject CreateMeetingsViewModel ViewModel
 
-<p>Lets create a meeting! Selected date: @SelectedDate</p>
+<p>Lets create a meeting! Selected date: @ViewModel.SelectedDate.ToString()</p>
 
 @code {
     [Parameter]
     public string? SelectedDate { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if(SelectedDate is not null)
+            ViewModel.SelectedDate = DateTime.Parse(SelectedDate);
+
+
+    }
+
 }
