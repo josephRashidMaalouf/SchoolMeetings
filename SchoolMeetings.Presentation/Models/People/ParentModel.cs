@@ -2,5 +2,5 @@
 
 public class ParentModel : PersonBaseModel
 {
-    public string NameOfChild { get; set; }
+    public string? NameOfChild { get; set; }
 }

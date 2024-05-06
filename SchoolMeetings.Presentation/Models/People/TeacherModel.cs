@@ -2,5 +2,5 @@
 
 public class TeacherModel : PersonBaseModel
 {
-    public string School { get; set; }
+    public string? School { get; set; }
 }
