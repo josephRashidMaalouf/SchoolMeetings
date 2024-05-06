@@ -8,4 +8,5 @@ public class MeetingModel
     public List<ParentModel> Parents { get; set; }
     public DateTime MeetingStart { get; set; }
     public DateTime MeetingEnd { get; set; }
+    public bool IsBooked { get; set; } = false;
 }

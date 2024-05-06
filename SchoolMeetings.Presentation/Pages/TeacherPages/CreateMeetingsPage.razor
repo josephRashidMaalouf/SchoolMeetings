@@ -1,7 +1,95 @@
 ﻿@page "/create-meetings/{SelectedDate}"
 @inject CreateMeetingsViewModel ViewModel
 
-<p>Lets create a meeting! Selected date: @ViewModel.SelectedDate.ToString()</p>
+<Card class="mb-3">
+    <CardHeader class="bg-primary text-light text-center">
+        Dina bokningsbara tider
+    </CardHeader>
+    <CardBody>
+        <table class="table table-sm table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Tid</th>
+                <th scope="col" style="text-align: right; padding-right: 80px;">Redigera</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>08:00-08:30</td>
+                <td style="text-align: right;">
+                    <Button class="btn-primary">Ändra</Button>
+                    <Button class="btn-danger">Ta bort</Button>
+                </td>
+            </tr>
+            <tr>
+                <td>09:00-09:00</td>
+                <td style="text-align: right;">
+                    <Button class="btn-primary">Ändra</Button>
+                    <Button class="btn-danger">Ta bort</Button>
+                </td>
+            </tr>
+            <tr>
+                <td>10:00-10:10</td>
+                <td style="text-align: right;">
+                    <Button class="btn-primary">Ändra</Button>
+                    <Button class="btn-danger">Ta bort</Button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </CardBody>
+    <CardFooter>
+        <Button class="btn-primary" style="width: 100%;">Lägg till</Button>
+    </CardFooter>
+</Card>
+<Card class="mb-3">
+    <CardHeader class="bg-primary text-light text-center">
+        Dina bokade tider
+    </CardHeader>
+    <CardBody>
+        <table class="table table-sm table-hover table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Tid</th>
+                <th scope="col">Elevens namn</th>
+                <th scope="col">Vårdnadshavare</th>
+                <th scope="col" style="text-align: center;">Redigera</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>08:00-08:30</td>
+                <td>Anton K</td>
+                <td>Anneli K</td>
+                <td style="text-align: center;">
+                    <Button class="btn-primary mb-1">Ändra</Button>
+                    <Button class="btn-danger">Ta bort</Button>
+                </td>
+            </tr>
+            <tr>
+                <td>09:00-09:00</td>
+                <td>Anton K</td>
+                <td>Anneli K</td>
+                <td style="text-align: center;">
+                    <Button class="btn-primary mb-1">Ändra</Button>
+                    <Button class="btn-danger">Ta bort</Button>
+                </td>
+            </tr>
+            <tr>
+                <td>10:00-10:10</td>
+                <td>Anton K</td>
+                <td>Anneli K</td>
+                <td style="text-align: center;">
+                    <Button class="btn-primary mb-1">Ändra</Button>
+                    <Button class="btn-danger">Ta bort</Button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </CardBody>
+</Card>
 
 @code {
     [Parameter]
@@ -11,7 +99,7 @@
     {
         await base.OnInitializedAsync();
 
-        if(SelectedDate is not null)
+        if (SelectedDate is not null)
             ViewModel.SelectedDate = DateTime.Parse(SelectedDate);
 
 
