@@ -5,26 +5,25 @@ using SchoolMeetings.Domain.Interfaces;
 
 namespace SchoolMeetings.Infrastructure.Repositories.Mongo;
 
-public class MongoRepositoryBase<TEntity> : IMongoRepository<TEntity>
+public class MongoRepositoryBase<TEntity>(string collectionName) : IMongoRepository<TEntity>
 {
+    //TODO: replace connectionstring with when hosting the db live
     protected const string ConnectionsString = "mongodb://localhost:27017/";
-    protected const string DataBaseName = "MajornaOrderDb";
+    protected const string DataBaseName = "SchoolMeetingsMongoDb";
 
-    //These are here for reference only
-    protected const string OrderCollection = "Orders";
-    protected const string ProductQuantityCollection = "ProductQuantity";
-    protected const string EventQuantityCollection = "EventQuantity";
+    protected readonly string _collectionName = collectionName;
 
-    protected IMongoCollection<T> ConnectToMongo<T>(string collectionName)
+
+    protected IMongoCollection<T> ConnectToMongo<T>()
     {
         var client = new MongoClient(ConnectionsString);
         var db = client.GetDatabase(DataBaseName);
-        return db.GetCollection<T>(collectionName);
+        return db.GetCollection<T>(_collectionName);
     }
 
-    public async Task<ICollection<TEntity>> GetAllAsync(string collectionName)
+    public async Task<ICollection<TEntity>> GetAllAsync()
     {
-        var collection = ConnectToMongo<TEntity>(collectionName);
+        var collection = ConnectToMongo<TEntity>();
 
         var filter = Builders<TEntity>.Filter.Empty;
 
@@ -33,9 +32,9 @@ public class MongoRepositoryBase<TEntity> : IMongoRepository<TEntity>
         return await results.ToListAsync();
     }
 
-    public async Task<TEntity?> GetByIdAsync(ObjectId id, string collectionName)
+    public async Task<TEntity?> GetByIdAsync(ObjectId id)
     {
-        var collection = ConnectToMongo<TEntity>(collectionName);
+        var collection = ConnectToMongo<TEntity>();
 
         var filter = Builders<TEntity>.Filter.Eq("Id", id);
 
@@ -44,35 +43,35 @@ public class MongoRepositoryBase<TEntity> : IMongoRepository<TEntity>
         return entity;
     }
     //TODO: doublecheck that this actually returns the entity with the newly generated ID
-    public async Task<TEntity> AddAsync(TEntity entity, string collectionName)
+    public async Task<TEntity> AddAsync(TEntity entity)
     {
-        var collection = ConnectToMongo<TEntity>(collectionName);
+        var collection = ConnectToMongo<TEntity>();
 
         await collection.InsertOneAsync(entity);
 
         return entity;
     }
 
-    public async Task<bool> UpdateAsync(TEntity entity, ObjectId id, string collectionName)
+    public async Task<bool> UpdateAsync(TEntity entity, ObjectId id)
     {
-        var quizCollection = ConnectToMongo<TEntity>(collectionName);
+        var collection = ConnectToMongo<TEntity>();
 
 
         var filter = Builders<TEntity>.Filter.Eq("Id", id);
         var replaceOptions = new ReplaceOptions { IsUpsert = true };
 
-        await quizCollection.ReplaceOneAsync(filter, entity, replaceOptions);
+        await collection.ReplaceOneAsync(filter, entity, replaceOptions);
 
         return true;
     }
 
-    public async Task<bool> DeleteAsync(ObjectId id, string collectionName)
+    public async Task<bool> DeleteAsync(ObjectId id)
     {
-        var quizCollection = ConnectToMongo<TEntity>(collectionName);
+        var collection = ConnectToMongo<TEntity>();
 
         var filter = Builders<TEntity>.Filter.Eq("Id", id);
 
-        await quizCollection.DeleteOneAsync(filter);
+        await collection.DeleteOneAsync(filter);
 
         return true;
     }

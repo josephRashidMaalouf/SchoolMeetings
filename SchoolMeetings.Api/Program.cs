@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
+//TODO: finish google auth
 builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddGoogle(googleOptions =>
     {
