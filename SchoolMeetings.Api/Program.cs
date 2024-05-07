@@ -2,10 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SchoolMeetings.Domain.Entities.Authentication;
 using SchoolMeetings.Infrastructure;
+using SchoolMeetings.Infrastructure.DevelopmentUserDemoData;
 using System.Security.Claims;
 
 //TODO: change to environmnet variable
-var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=master;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=SchoolMeetingsDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,9 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    await using var scope = app.Services.CreateAsyncScope();
+    await SeedData.InitializeAsync(scope.ServiceProvider);
 }
 
 app.UseHttpsRedirection();

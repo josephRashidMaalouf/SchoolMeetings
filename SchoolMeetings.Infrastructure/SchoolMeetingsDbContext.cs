@@ -8,7 +8,7 @@ namespace SchoolMeetings.Infrastructure;
 
 public class SchoolMeetingsDbContext(DbContextOptions options) : IdentityDbContext<User, Role, string,
     IdentityUserClaim<string>, UserRole, IdentityUserLogin<string>,
-    IdentityRoleClaim<string>, IdentityUserToken<string>>
+    IdentityRoleClaim<string>, IdentityUserToken<string>>(options)
 {
 
 
