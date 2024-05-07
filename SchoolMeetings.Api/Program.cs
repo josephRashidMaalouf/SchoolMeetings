@@ -4,9 +4,9 @@ using SchoolMeetings.Domain.Entities.Authentication;
 using SchoolMeetings.Infrastructure;
 using SchoolMeetings.Infrastructure.DevelopmentUserDemoData;
 using System.Security.Claims;
-using SchoolMeetings.Api.DependencyInjection;
 using SchoolMeetings.Api.Extensions;
-
+using SchoolMeetings.Api;
+using SchoolMeetings.Api.DependencyInjection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,6 +48,9 @@ builder.Services.AddCors(
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()));
+
+//All services and repositories are injected through here
+builder.Services.AddApiServices();
 
 var app = builder.Build();
 

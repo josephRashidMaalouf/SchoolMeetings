@@ -10,9 +10,9 @@ public static class CustomAuthenticationEndPoints
     {
         var group = app.MapGroup("/user");
 
-        app.MapPost("/logout", LogOut).RequireAuthorization();
+        group.MapPost("/logout", LogOut).RequireAuthorization();
 
-        app.MapGet("/roles", GetRoles).RequireAuthorization();
+        group.MapGet("/roles", GetRoles).RequireAuthorization();
 
 
         return app;
