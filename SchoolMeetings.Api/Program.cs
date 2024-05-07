@@ -4,6 +4,8 @@ using SchoolMeetings.Domain.Entities.Authentication;
 using SchoolMeetings.Infrastructure;
 using SchoolMeetings.Infrastructure.DevelopmentUserDemoData;
 using System.Security.Claims;
+using SchoolMeetings.Api.DependencyInjection;
+using SchoolMeetings.Api.Extensions;
 
 //TODO: change to environmnet variable
 var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=SchoolMeetingsDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
@@ -61,39 +63,7 @@ app.UseCors("wasm");
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapPost("/logout", async (SignInManager<User> signInManager, object empty) =>
-{
-    if (empty is not null)
-    {
-        await signInManager.SignOutAsync();
-
-        return Results.Ok();
-    }
-
-    return Results.Unauthorized();
-}).RequireAuthorization();
-
-app.MapGet("/roles", (ClaimsPrincipal user) =>
-{
-    if (user.Identity is not null && user.Identity.IsAuthenticated)
-    {
-        var identity = (ClaimsIdentity)user.Identity;
-        var roles = identity.FindAll(identity.RoleClaimType)
-            .Select(c =>
-                new
-                {
-                    c.Issuer,
-                    c.OriginalIssuer,
-                    c.Type,
-                    c.Value,
-                    c.ValueType
-                });
-
-        return TypedResults.Json(roles);
-    }
-
-    return Results.Unauthorized();
-}).RequireAuthorization();
+app.MapAllEndPoints();
 
 
 
