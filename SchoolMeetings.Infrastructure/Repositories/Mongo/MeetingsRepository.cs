@@ -5,7 +5,7 @@ using SchoolMeetings.Domain.Interfaces;
 
 namespace SchoolMeetings.Infrastructure.Repositories.Mongo;
 
-public class MeetingsRepository(string collectionName) : MongoRepositoryBase<Meeting>(collectionName)
+public class MeetingsRepository(string collectionName) : MongoRepositoryBase<Meeting>(collectionName), IMeetingRepository
 {
     public async Task<ICollection<Meeting>> GetAllByTeacherEmailAsync(string teacherEmail)
     {
