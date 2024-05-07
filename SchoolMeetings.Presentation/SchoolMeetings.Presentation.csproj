@@ -1,10 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <UserSecretsId>3bcc6525-2909-4d69-9f42-184f34419d74</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +25,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Pages\Account\" />
+    <UpToDateCheckInput Remove="Pages\Account\Login.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\Account\Login.razor" />
   </ItemGroup>
 
 </Project>

@@ -7,8 +7,7 @@ using System.Security.Claims;
 using SchoolMeetings.Api.DependencyInjection;
 using SchoolMeetings.Api.Extensions;
 
-//TODO: change to environmnet variable
-var connectionString = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=SchoolMeetingsDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,20 +17,28 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme).AddIdentityCookies();
+builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddGoogle(googleOptions =>
+    {
+        googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    })
+    .AddIdentityCookies();
 builder.Services.AddAuthorizationBuilder();
 
-//TODO: change to environmnet variable
+//TODO: Update to live connectionstring when the database is hosted
 builder.Services.AddDbContext<SchoolMeetingsDbContext>(
     options =>
     {
-        options.UseSqlServer(connectionString);
+        options.UseSqlServer(builder.Configuration["Database:Local"]);
     });
 
 builder.Services.AddIdentityCore<User>()
     .AddRoles<Role>()
     .AddEntityFrameworkStores<SchoolMeetingsDbContext>()
     .AddApiEndpoints();
+
+
 
 builder.Services.AddCors(
     options => options.AddPolicy(
