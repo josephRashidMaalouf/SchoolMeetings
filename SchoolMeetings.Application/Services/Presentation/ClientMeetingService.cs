@@ -1,11 +1,14 @@
-﻿using MongoDB.Bson;
+﻿using Amazon.Runtime;
+using MongoDB.Bson;
 using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
+using System.Net.Http;
 
 namespace SchoolMeetings.Application.Services.Presentation;
 
-public class ClientMeetingService : IMeetingService
+public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
 {
+    private readonly HttpClient _httpClient = factory.CreateClient("SchoolMeetingsApi");
     public Task<ICollection<Meeting>> GetAllAsync()
     {
         throw new NotImplementedException();
