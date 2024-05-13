@@ -27,7 +27,7 @@ builder.Services.AddHttpClient(
     .AddHttpMessageHandler<CookieHandler>();
 
 
-builder.Services.AddViewModels();
+builder.Services.AddMyServices();
 
 builder.Services.AddBlazorBootstrap();
 
