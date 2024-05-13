@@ -21,7 +21,7 @@ public static class MeetingEndPoints
 
         group.MapPost("/", AddAsync).RequireAuthorization();
 
-        group.MapDelete("/", DeleteAsync).RequireAuthorization();
+        group.MapDelete("/{id}", DeleteAsync).RequireAuthorization();
 
         return app;
     }

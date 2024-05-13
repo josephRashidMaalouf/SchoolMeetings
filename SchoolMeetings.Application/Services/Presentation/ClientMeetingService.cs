@@ -3,6 +3,7 @@ using MongoDB.Bson;
 using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
 using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace SchoolMeetings.Application.Services.Presentation;
 
@@ -11,41 +12,86 @@ public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
     private readonly HttpClient _httpClient = factory.CreateClient("SchoolMeetingsApi");
     public Task<ICollection<Meeting>> GetAllAsync()
     {
+        //Not implemented because no such endpoint exists as of now
         throw new NotImplementedException();
     }
 
-    public Task<Meeting?> GetByIdAsync(ObjectId id)
+    public async Task<Meeting?> GetByIdAsync(ObjectId id)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"meetings/{id}");
+
+        if (response.IsSuccessStatusCode is false)
+            return null;
+
+        var result = await response.Content.ReadFromJsonAsync<Meeting>();
+
+        return result;
+
     }
 
-    public Task<Meeting> AddAsync(Meeting entity)
+    public async Task<Meeting?> AddAsync(Meeting meeting)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PostAsJsonAsync<Meeting>("/meetings", meeting);
+
+        if (response.IsSuccessStatusCode is false)
+            return null;
+
+        var newlyAddedMeeting = response.Content.ReadFromJsonAsync<Meeting>();
+
+        return meeting;
     }
 
-    public Task<bool> UpdateAsync(Meeting entity)
+    public async Task<bool> UpdateAsync(Meeting meeting)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.PutAsJsonAsync<Meeting>("/meetings", meeting);
+
+        var result = await response.Content.ReadFromJsonAsync<bool>();
+
+        return result;
     }
 
-    public Task<bool> DeleteAsync(ObjectId id)
+    public async Task<bool> DeleteAsync(ObjectId id)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.DeleteAsync($"/meetings/{id}");
+
+        var result = await response.Content.ReadFromJsonAsync<bool>();
+
+        return result;
     }
 
-    public Task<ICollection<Meeting>> GetAllByTeacherEmailAsync(string teacherEmail)
+    public async Task<ICollection<Meeting>?> GetAllByTeacherEmailAsync(string teacherEmail)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"/meetings/all/{teacherEmail}");
+
+        if (response.IsSuccessStatusCode is false)
+            return null;
+
+        var result = await response.Content.ReadFromJsonAsync<List<Meeting>>();
+
+        return result;
     }
 
-    public Task<ICollection<Meeting>> GetUnbookedByTeacherEmailAsync(string teacherEmail)
+    public async Task<ICollection<Meeting>?> GetUnbookedByTeacherEmailAsync(string teacherEmail)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"/meetings/unbooked/{teacherEmail}");
+
+        if(response.IsSuccessStatusCode is false)
+            return null;
+
+        var result = await response.Content.ReadFromJsonAsync<List<Meeting>>();
+
+        return result;
     }
 
-    public Task<ICollection<Meeting>> GetBookedByTeacherEmailAsync(string teacherEmail)
+    public async Task<ICollection<Meeting>?> GetBookedByTeacherEmailAsync(string teacherEmail)
     {
-        throw new NotImplementedException();
+        var response = await _httpClient.GetAsync($"meetings/booked/{teacherEmail}");
+
+        if(response.IsSuccessStatusCode is false)
+            return null;
+
+        var result = await response.Content.ReadFromJsonAsync<List<Meeting>>();
+
+        return result;
     }
 }
