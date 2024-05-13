@@ -133,7 +133,7 @@ namespace SchoolMeetings.Presentation.Identity
 						userInfo.Claims.Where(c => c.Key != ClaimTypes.Name && c.Key != ClaimTypes.Email)
 							.Select(c => new Claim(c.Key, c.Value)));
 
-					var rolesResponse = await _httpClient.GetAsync("roles");
+					var rolesResponse = await _httpClient.GetAsync("/user/roles");
 
 					rolesResponse.EnsureSuccessStatusCode();
 
@@ -166,7 +166,7 @@ namespace SchoolMeetings.Presentation.Identity
 		{
 			const string Empty = "{}";
 			var emptyContent = new StringContent(Empty, Encoding.UTF8, "application/json");
-			await _httpClient.PostAsync("logout", emptyContent);
+			await _httpClient.PostAsync("/user/logout", emptyContent);
 			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 		}
 
