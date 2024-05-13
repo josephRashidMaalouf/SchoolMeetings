@@ -1,5 +1,8 @@
 ﻿@page "/create-meetings/{SelectedDate}"
 @inject CreateMeetingsViewModel ViewModel
+@inject NavigationManager NavigationManager
+@inject IAccountManagement Acct
+@attribute [Authorize]
 
 <Card class="mb-3">
     <CardHeader class="bg-primary text-light text-center">
@@ -99,6 +102,11 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        var isAuthenticated = await Acct.CheckAuthenticatedAsync();
+
+        if(isAuthenticated is false)
+            NavigationManager.NavigateTo("/");
 
         if (SelectedDate is not null)
             ViewModel.SelectedDate = DateTime.Parse(SelectedDate);

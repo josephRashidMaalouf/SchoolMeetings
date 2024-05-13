@@ -1,5 +1,10 @@
 ﻿@page "/teacher-calendar"
 @inject TeacherCalendarViewModel ViewModel
+@inject IAccountManagement Acct
+@inject NavigationManager NavigationManager
+
+@attribute [Authorize]
+
 
 <h3 class="m-3">Din kalender</h3>
 
@@ -73,6 +78,12 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+
+        var isAuthenticated = await Acct.CheckAuthenticatedAsync();
+
+        if (isAuthenticated is false)
+            NavigationManager.NavigateTo("/");
+
         await ViewModel.GenerateMonth(0);
 
     }
