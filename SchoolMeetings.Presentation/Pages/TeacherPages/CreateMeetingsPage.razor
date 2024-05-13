@@ -19,15 +19,18 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <Virtualize Items="ViewModel.UnBookedMeetings">
+
+                <Virtualize Items="ViewModel.UnBookedMeetings">
+                    <tr>
                         <td>@context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()</td>
                         <td style="text-align: right;">
                             <Button class="btn-primary">Ändra</Button>
                             <Button class="btn-danger">Ta bort</Button>
                         </td>
-                    </Virtualize>
-                </tr>
+                    </tr>
+                </Virtualize>
+
+
             </tbody>
         </table>
     </CardBody>
@@ -78,11 +81,16 @@
 
 <Modal @ref="addNewMeetingModal" Title="Modal title">
     <BodyTemplate>
-        Modal body text goes here.
+        <EditForm Model="ViewModel.NewMeeting">
+            <p>Välj starttid för mötet</p>
+            <TimeInput @bind-Value="ViewModel.NewMeetingStart" class="mb-3" />
+            <p>Välj sluttid för mötet</p>
+            <TimeInput @bind-Value="ViewModel.NewMeetingEnd" />
+        </EditForm>
     </BodyTemplate>
     <FooterTemplate>
         <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
-        <Button Color="ButtonColor.Primary">Save changes</Button>
+        <Button Color="ButtonColor.Primary" @onclick="ViewModel.AddNewMeeting">Lägg till</Button>
     </FooterTemplate>
 </Modal>
 
@@ -103,6 +111,10 @@
 
         if (SelectedDate is not null)
             ViewModel.SelectedDate = DateTime.Parse(SelectedDate);
+
+        var teacherEmail = await Acct.GetUserEmailAsync();
+
+        await ViewModel.FetchMeetingsByTeacher(teacherEmail);
 
     }
 

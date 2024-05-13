@@ -162,6 +162,18 @@ namespace SchoolMeetings.Presentation.Identity
 			return new AuthenticationState(user);
 		}
 
+        public async Task<string> GetUserEmailAsync()
+        {
+            var userResponse = await _httpClient.GetAsync("manage/info");
+
+            userResponse.EnsureSuccessStatusCode();
+
+            var userJson = await userResponse.Content.ReadAsStringAsync();
+            var userInfo = JsonSerializer.Deserialize<UserModel>(userJson, jsonSerializerOptions);
+
+            return userInfo.Email;
+        }
+
 		public async Task LogoutAsync()
 		{
 			const string Empty = "{}";
