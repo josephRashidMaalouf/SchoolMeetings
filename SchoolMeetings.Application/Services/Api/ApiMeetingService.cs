@@ -42,21 +42,28 @@ public class ApiMeetingService(IMeetingRepository metingRepository) : IMeetingSe
         return deleteSuccess;
     }
 
-    public async Task<ICollection<Meeting>> GetAllByTeacherEmailAsync(string teacherEmail)
+    public async Task<ICollection<Meeting>?> GetAllByTeacherEmailAsync(string teacherEmail)
     {
         var meetings = await _metingRepository.GetAllByTeacherEmailAsync(teacherEmail);
 
         return meetings;
     }
 
-    public async Task<ICollection<Meeting>> GetUnbookedByTeacherEmailAsync(string teacherEmail)
+    public async Task<ICollection<Meeting>?> GetAllByTeacherEmailAndDateAsync(string teacherEmail, string date)
+    {
+        var meetings = await _metingRepository.GetAllByTeacherEmailAndDateAsync(teacherEmail, date);
+
+        return meetings;
+    }
+
+    public async Task<ICollection<Meeting>?> GetUnbookedByTeacherEmailAsync(string teacherEmail)
     {
         var meetings = await _metingRepository.GetUnbookedByTeacherEmailAsync(teacherEmail);
 
         return meetings;
     }
 
-    public async Task<ICollection<Meeting>> GetBookedByTeacherEmailAsync(string teacherEmail)
+    public async Task<ICollection<Meeting>?> GetBookedByTeacherEmailAsync(string teacherEmail)
     {
         var meetings = await _metingRepository.GetBookedByTeacherEmailAsync(teacherEmail);
 

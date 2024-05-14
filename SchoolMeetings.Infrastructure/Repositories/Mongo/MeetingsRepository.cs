@@ -17,6 +17,27 @@ public class MeetingsRepository(string collectionName) : MongoRepositoryBase<Mee
 
         return await results.ToListAsync();
     }
+
+    public async Task<ICollection<Meeting>> GetAllByTeacherEmailAndDateAsync(string teacherEmail, string date)
+    {
+        var collection = ConnectToMongo<Meeting>();
+
+        DateTime parsedDate = DateTime.Parse(date);
+        DateTime startDate = parsedDate.Date;
+        DateTime endDate = startDate.AddDays(1); // Add one day to include the whole day
+
+        var dateFilter = Builders<Meeting>.Filter.Gte("MeetingStart", startDate) &
+                         Builders<Meeting>.Filter.Lt("MeetingStart", endDate);
+
+        var teacherFilter = Builders<Meeting>.Filter.Eq("TeacherEmail", teacherEmail);
+
+        var filter = Builders<Meeting>.Filter.And(teacherFilter, dateFilter);
+
+        var results = await collection.FindAsync(filter);
+
+        return await results.ToListAsync();
+    }
+
     public async Task<ICollection<Meeting>> GetUnbookedByTeacherEmailAsync(string teacherEmail)
     {
         var collection = ConnectToMongo<Meeting>();
