@@ -14,7 +14,7 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
     private readonly IMeetingService _clientMeetingService = clientMeetingService;
 
     public DateTime SelectedDate { get; set; }
-
+    public string LoggedInTeacherEmail { get; set; } = string.Empty;
     public Meeting NewMeeting { get; set; } = new();
     public TimeOnly NewMeetingStart { get; set; } = new();
     public TimeOnly NewMeetingEnd { get; set; } = new();
@@ -26,23 +26,25 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
 
     public async Task FetchMeetingsByTeacher(string email)
     {
-        //TODO: Replace with request that returns for this date only.
-        var meetings = await _clientMeetingService.GetAllByTeacherEmailAsync(email);
+        var meetings = await _clientMeetingService.GetAllByTeacherEmailAndDateAsync(email, SelectedDate.ToShortDateString());
 
         if (meetings is null)
             return;
 
-        //TODO: Right now this fetches ALL meetings, and not just the ones for this date. Fix this
         var bookedMeetings = meetings.Where(m => m.IsBooked is true);
         var unbookedMeetings = meetings.Where(m => m.IsBooked is false);
+
+        BookedMeetings.Clear();
+        UnBookedMeetings.Clear();
 
         BookedMeetings.AddRange(bookedMeetings);
         UnBookedMeetings.AddRange(unbookedMeetings);
 
     }
 
-    public async Task AddNewMeeting()
+    public async Task AddNewMeeting(string email)
     {
+        NewMeeting.TeacherEmail = email;
         NewMeeting.MeetingStart = SelectedDate;
         NewMeeting.MeetingEnd = SelectedDate;
 

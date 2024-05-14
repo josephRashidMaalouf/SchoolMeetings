@@ -21,7 +21,7 @@ public class ApiMeetingService(IMeetingRepository metingRepository) : IMeetingSe
         return meeting;
     }
 
-    public async Task<Meeting> AddAsync(Meeting entity)
+    public async Task<Meeting?> AddAsync(Meeting entity)
     {
         var newlyAddedMeeting = await _metingRepository.AddAsync(entity);
 

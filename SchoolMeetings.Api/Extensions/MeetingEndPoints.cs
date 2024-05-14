@@ -13,7 +13,7 @@ public static class MeetingEndPoints
         group.MapGet("/unbooked/{teacherEmail}", GetAllUnbookedByTeacherEmailAsync);
         group.MapGet("/booked/{teacherEmail}", GetAllBookedByTeacherEmailAsync).RequireAuthorization();
         group.MapGet("/all/{teacherEmail}", GetAllByTeacherEmailAsync).RequireAuthorization();
-        group.MapGet("/all/teacherEmail", GetAllByTeacherEmailAndDateAsync).RequireAuthorization();
+        group.MapGet("/all/", GetAllByTeacherEmailAndDateAsync).RequireAuthorization();
         group.MapGet("/{id}", GetByIdAsync).RequireAuthorization();
 
         group.MapPut("/book/{meetingId}", BookAsync);

@@ -90,7 +90,7 @@
     </BodyTemplate>
     <FooterTemplate>
         <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
-        <Button Color="ButtonColor.Primary" @onclick="ViewModel.AddNewMeeting">Lägg till</Button>
+        <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.AddNewMeeting(ViewModel.LoggedInTeacherEmail)">Lägg till</Button>
     </FooterTemplate>
 </Modal>
 
@@ -98,7 +98,6 @@
 @code {
     [Parameter]
     public string? SelectedDate { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -112,9 +111,9 @@
         if (SelectedDate is not null)
             ViewModel.SelectedDate = DateTime.Parse(SelectedDate);
 
-        var teacherEmail = await Acct.GetUserEmailAsync();
+        ViewModel.LoggedInTeacherEmail = await Acct.GetUserEmailAsync();
 
-        await ViewModel.FetchMeetingsByTeacher(teacherEmail);
+        await ViewModel.FetchMeetingsByTeacher(ViewModel.LoggedInTeacherEmail);
 
     }
 

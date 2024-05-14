@@ -19,7 +19,7 @@ public abstract class RepositoryBase<TEntity, TId>(SchoolMeetingsDbContext conte
     }
 
 
-    public virtual async Task<TEntity> AddAsync(TEntity entity)
+    public virtual async Task<TEntity?> AddAsync(TEntity entity)
     {
         await _context.Set<TEntity>().AddAsync(entity);
         await _context.SaveChangesAsync();
