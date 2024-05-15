@@ -99,45 +99,7 @@
     <BodyTemplate>
         <EditForm Model="ViewModel.SelectedEditMeeting">
             
-            <p>Ändra starttid för mötet</p>
-            <TimeInput @bind-Value="ViewModel.EditMeetingStart" class="mb-3" />
-            <p>Ändra sluttid för mötet</p>
-            <TimeInput @bind-Value="ViewModel.EditMeetingEnd" />
-            <Card>
-                <CardBody>
-                    <p>Uppgifter om vårdnadshavare</p>
-                    @if (ViewModel.SelectedEditMeeting.Parents is not null)
-                    {
-                        @foreach (var parent in ViewModel.SelectedEditMeeting.Parents)
-                        {
-                            <div class="mb-3">
-                                <p class="mb-1">Vårndandshavarens namn</p>
-                                <InputText Placeholder="Vårdnadshavarens namn" @bind-Value="parent.Name" />
-                            </div>
-                            <div class="mb-3">
-                                <p class="mb-1">Vårndandshavarens email</p>
-                                <InputText Placeholder="Vårdnadshavarens email" @bind-Value="parent.Email" />
-                            </div>
-                            <div class="mb-3">
-                                <p class="mb-1">Vårndandshavarens telefonnummer</p>
-                                <InputText Placeholder="Vårdnadshavarens telefonnummer" @bind-Value="parent.PhoneNumber" />
-                            </div>
-
-                        }
-
-                    }
-                </CardBody>
-            </Card>
-            <div class="mb-3">
-                <p class="mb-1">Elevens namn</p>
-                <InputText Placeholder="Elevens namn" @bind-Value="ViewModel.SelectedEditMeeting.StudentName" />
-            </div>
-            <div class="mb-3">
-                <p class="mb-1">
-                    Markera som bokad
-                </p>
-                <InputCheckbox @bind-Value="ViewModel.SelectedEditMeeting.IsBooked" />
-            </div>
+            
         </EditForm>
         
 
