@@ -32,7 +32,7 @@ public class MongoRepositoryBase<TEntity>(string collectionName) : IMongoReposit
         return await results.ToListAsync();
     }
 
-    public async Task<TEntity?> GetByIdAsync(ObjectId id)
+    public async Task<TEntity?> GetByIdAsync(string id)
     {
         var collection = ConnectToMongo<TEntity>();
 
@@ -52,7 +52,7 @@ public class MongoRepositoryBase<TEntity>(string collectionName) : IMongoReposit
         return entity;
     }
 
-    public async Task<bool> UpdateAsync(TEntity entity, ObjectId id)
+    public async Task<bool> UpdateAsync(TEntity entity, string id)
     {
         var collection = ConnectToMongo<TEntity>();
 
@@ -65,7 +65,7 @@ public class MongoRepositoryBase<TEntity>(string collectionName) : IMongoReposit
         return true;
     }
 
-    public async Task<bool> DeleteAsync(ObjectId id)
+    public async Task<bool> DeleteAsync(string id)
     {
         var collection = ConnectToMongo<TEntity>();
 

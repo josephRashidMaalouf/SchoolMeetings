@@ -3,7 +3,7 @@ using SchoolMeetings.Domain.Entities;
 
 namespace SchoolMeetings.Domain.Interfaces;
 
-public interface IMeetingService : ICrud<Meeting, ObjectId>
+public interface IMeetingService : ICrud<Meeting, string>
 {
     Task<ICollection<Meeting>?> GetAllByTeacherEmailAsync(string teacherEmail);
     Task<ICollection<Meeting>?> GetAllByTeacherEmailAndDateAsync(string teacherEmail, string date);

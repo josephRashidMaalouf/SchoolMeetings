@@ -16,7 +16,7 @@ public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
         throw new NotImplementedException();
     }
 
-    public async Task<Meeting?> GetByIdAsync(ObjectId id)
+    public async Task<Meeting?> GetByIdAsync(string id)
     {
         var response = await _httpClient.GetAsync($"meetings/{id}");
 
@@ -50,7 +50,7 @@ public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
         return result;
     }
 
-    public async Task<bool> DeleteAsync(ObjectId id)
+    public async Task<bool> DeleteAsync(string id)
     {
         var response = await _httpClient.DeleteAsync($"/meetings/{id}");
 

@@ -15,7 +15,7 @@ public class ApiMeetingService(IMeetingRepository metingRepository) : IMeetingSe
         return meetings;
     }
 
-    public async Task<Meeting?> GetByIdAsync(ObjectId id)
+    public async Task<Meeting?> GetByIdAsync(string id)
     {
         var meeting = await _metingRepository.GetByIdAsync(id);
         return meeting;
@@ -35,7 +35,7 @@ public class ApiMeetingService(IMeetingRepository metingRepository) : IMeetingSe
         return updateSuccess;
     }
 
-    public async Task<bool> DeleteAsync(ObjectId id)
+    public async Task<bool> DeleteAsync(string id)
     {
         var deleteSuccess = await _metingRepository.DeleteAsync(id);
 

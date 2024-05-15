@@ -56,7 +56,7 @@ public static class MeetingEndPoints
         return Results.Ok(meetings);
     }
 
-    public static async Task<IResult> GetByIdAsync(IMeetingService meetingService, ObjectId id)
+    public static async Task<IResult> GetByIdAsync(IMeetingService meetingService, string id)
     {
         var meeting = await meetingService.GetByIdAsync(id);
 
@@ -80,7 +80,7 @@ public static class MeetingEndPoints
         return Results.Ok(updateSuccess);
     }
 
-    public static async Task<IResult> BookAsync(IMeetingService meetingService, ObjectId meetingId)
+    public static async Task<IResult> BookAsync(IMeetingService meetingService, string meetingId)
     {
         var meeting = await meetingService.GetByIdAsync(meetingId);
 
@@ -97,7 +97,7 @@ public static class MeetingEndPoints
         return Results.Ok(updateSuccess);
     }
 
-    public static async Task<IResult> CancelAsync(IMeetingService meetingService, ObjectId meetingId)
+    public static async Task<IResult> CancelAsync(IMeetingService meetingService, string meetingId)
     {
         var meeting = await meetingService.GetByIdAsync(meetingId);
 
@@ -116,7 +116,7 @@ public static class MeetingEndPoints
 
     #endregion
 
-    public static async Task<IResult> DeleteAsync(IMeetingService meetingService, ObjectId id)
+    public static async Task<IResult> DeleteAsync(IMeetingService meetingService, string id)
     {
         var deleteSuccess = await meetingService.DeleteAsync(id);
 
