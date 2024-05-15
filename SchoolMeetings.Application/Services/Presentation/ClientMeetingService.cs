@@ -116,7 +116,7 @@ public class ClientMeetingService(IHttpClientFactory factory) : IClientMeetingSe
         
 
         //TODO: Put kommer inte fungera, kanske delete req istället? fundera på saken
-        var response = await _httpClient.PutAsync($"/meetings/{meetingId}");
+        var response = await _httpClient.PutAsJsonAsync<Meeting>($"/meetings/{meetingId}", new Meeting());
 
         var result = await response.Content.ReadFromJsonAsync<bool>();
 

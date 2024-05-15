@@ -97,7 +97,7 @@ public static class MeetingEndPoints
         return Results.Ok(updateSuccess);
     }
 
-    public static async Task<IResult> CancelAsync(IMeetingService meetingService, string meetingId)
+    public static async Task<IResult> CancelAsync(IMeetingService meetingService, string meetingId, Meeting cancelMeeting)
     {
         //TODO: refactor code to service class
         var meeting = await meetingService.GetByIdAsync(meetingId);
