@@ -20,6 +20,8 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
     public TimeOnly NewMeetingEnd { get; set; } = new();
 
     public Meeting SelectedEditMeeting { get; set; } = new();
+    public TimeOnly EditMeetingStart { get; set; } = new();
+    public TimeOnly EditMeetingEnd { get; set; } = new();
 
     public List<Meeting> BookedMeetings { get; set; } = new();
     public List<Meeting> UnBookedMeetings { get; set; } = new();

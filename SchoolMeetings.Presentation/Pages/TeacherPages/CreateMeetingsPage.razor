@@ -25,7 +25,7 @@
                     <tr>
                         <td>@context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()</td>
                         <td style="text-align: right;">
-                            <Button class="btn-primary" @onclick="OnShowEditModalClick">Ändra</Button>
+                            <Button class="btn-primary" @onclick="async () => await OnShowEditModalClick(context)">Ändra</Button>
                             <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeetingAsync(context)">Ta bort</Button>
                         </td>
                     </tr>
@@ -98,14 +98,15 @@
 <Modal @ref="editMeetingModal" Title="Modal title">
     <BodyTemplate>
         <EditForm Model="ViewModel.SelectedEditMeeting">
+            
             <p>Ändra starttid för mötet</p>
-            <TimeInput @bind-Value="ViewModel.SelectedEditMeeting" class="mb-3" />
+            <TimeInput @bind-Value="ViewModel.EditMeetingStart" class="mb-3" />
             <p>Ändra sluttid för mötet</p>
-            <TimeInput @bind-Value="ViewModel.SelectedEditMeeting" />
+            <TimeInput @bind-Value="ViewModel.EditMeetingEnd" />
             <Card>
                 <CardBody>
                     <p>Uppgifter om vårdnadshavare</p>
-                    @if (ViewModel.NewMeeting.Parents is not null)
+                    @if (ViewModel.SelectedEditMeeting.Parents is not null)
                     {
                         @foreach (var parent in ViewModel.SelectedEditMeeting.Parents)
                         {
@@ -138,6 +139,15 @@
                 <InputCheckbox @bind-Value="ViewModel.SelectedEditMeeting.IsBooked" />
             </div>
         </EditForm>
+        
+
+        @* <p>@ViewModel.SelectedEditMeeting.Id</p>
+        <EditForm Model="ViewModel.SelectedEditMeeting">
+            <div class="mb-3">
+                <p>Starttid</p>
+                <TimeInput class="form-control" @bind-Value="ViewModel.SelectedEditMeeting.MeetingStart"></TimeInput>
+            </div>
+        </EditForm> *@
     </BodyTemplate>
     <FooterTemplate>
         <Button Color="ButtonColor.Secondary" @onclick="OnHideEditModalClick">Close</Button>
@@ -183,8 +193,16 @@
 
     private Modal editMeetingModal;
 
-    private async Task OnShowEditModalClick()
+    private async Task OnShowEditModalClick(Meeting meeting)
     {
+        ViewModel.SelectedEditMeeting = meeting;
+        
+        var meetingStartTime = meeting.MeetingStart.TimeOfDay;
+        ViewModel.EditMeetingStart = new TimeOnly(meetingStartTime.Ticks);
+
+        var meetingEndTime = meeting.MeetingStart.TimeOfDay;
+        ViewModel.EditMeetingEnd = new TimeOnly(meetingEndTime.Ticks);
+
         await editMeetingModal?.ShowAsync();
     }
 
