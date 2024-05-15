@@ -26,7 +26,7 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
 
     public async Task FetchMeetingsByTeacher(string email)
     {
-        id var meetings = await _clientMeetingService.GetAllByTeacherEmailAndDateAsync(email, SelectedDate.ToShortDateString());
+        var meetings = await _clientMeetingService.GetAllByTeacherEmailAndDateAsync(email, SelectedDate.ToShortDateString());
 
         if (meetings is null)
             return;
