@@ -19,6 +19,8 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
     public TimeOnly NewMeetingStart { get; set; } = new();
     public TimeOnly NewMeetingEnd { get; set; } = new();
 
+    public Meeting SelectedEditMeeting { get; set; } = new();
+
     public List<Meeting> BookedMeetings { get; set; } = new();
     public List<Meeting> UnBookedMeetings { get; set; } = new();
 
@@ -42,7 +44,8 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
 
     }
 
-    public async Task AddNewMeeting(string email)
+    
+    public async Task AddNewMeetingAsync(string email)
     {
         NewMeeting.TeacherEmail = email;
         NewMeeting.MeetingStart = SelectedDate;
@@ -61,7 +64,12 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
         NewMeeting = new();
     }
 
-    public async Task DeleteMeeting(Meeting meeting)
+    public async Task UpdateMeetingAsync(Meeting meeting)
+    {
+
+    }
+
+    public async Task DeleteMeetingAsync(Meeting meeting)
     {
         var successStatus = await _clientMeetingService.DeleteAsync(meeting.Id);
 

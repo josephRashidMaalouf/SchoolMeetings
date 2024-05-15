@@ -1,5 +1,6 @@
 ﻿@page "/create-meetings/{SelectedDate}"
 @using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using SchoolMeetings.Domain.Entities
 @inject CreateMeetingsViewModel ViewModel
 @inject NavigationManager NavigationManager
 @inject IAccountManagement Acct
@@ -24,8 +25,8 @@
                     <tr>
                         <td>@context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()</td>
                         <td style="text-align: right;">
-                            <Button class="btn-primary">Ändra</Button>
-                            <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeeting(context)">Ta bort</Button>
+                            <Button class="btn-primary" @onclick="OnShowEditModalClick">Ändra</Button>
+                            <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeetingAsync(context)">Ta bort</Button>
                         </td>
                     </tr>
                 </Virtualize>
@@ -69,7 +70,7 @@
                         </td>
                         <td style="text-align: center;">
                             <Button class="btn-primary mb-1">Ändra</Button>
-                            <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeeting(context)">Ta bort</Button>
+                            <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeetingAsync(context)">Ta bort</Button>
                         </td>
                     </tr>
 
@@ -90,7 +91,57 @@
     </BodyTemplate>
     <FooterTemplate>
         <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
-        <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.AddNewMeeting(ViewModel.LoggedInTeacherEmail)">Lägg till</Button>
+        <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.AddNewMeetingAsync(ViewModel.LoggedInTeacherEmail)">Lägg till</Button>
+    </FooterTemplate>
+</Modal>
+
+<Modal @ref="editMeetingModal" Title="Modal title">
+    <BodyTemplate>
+        <EditForm Model="ViewModel.SelectedEditMeeting">
+            <p>Ändra starttid för mötet</p>
+            <TimeInput @bind-Value="ViewModel.SelectedEditMeeting" class="mb-3" />
+            <p>Ändra sluttid för mötet</p>
+            <TimeInput @bind-Value="ViewModel.SelectedEditMeeting" />
+            <Card>
+                <CardBody>
+                    <p>Uppgifter om vårdnadshavare</p>
+                    @if (ViewModel.NewMeeting.Parents is not null)
+                    {
+                        @foreach (var parent in ViewModel.SelectedEditMeeting.Parents)
+                        {
+                            <div class="mb-3">
+                                <p class="mb-1">Vårndandshavarens namn</p>
+                                <InputText Placeholder="Vårdnadshavarens namn" @bind-Value="parent.Name" />
+                            </div>
+                            <div class="mb-3">
+                                <p class="mb-1">Vårndandshavarens email</p>
+                                <InputText Placeholder="Vårdnadshavarens email" @bind-Value="parent.Email" />
+                            </div>
+                            <div class="mb-3">
+                                <p class="mb-1">Vårndandshavarens telefonnummer</p>
+                                <InputText Placeholder="Vårdnadshavarens telefonnummer" @bind-Value="parent.PhoneNumber" />
+                            </div>
+
+                        }
+
+                    }
+                </CardBody>
+            </Card>
+            <div class="mb-3">
+                <p class="mb-1">Elevens namn</p>
+                <InputText Placeholder="Elevens namn" @bind-Value="ViewModel.SelectedEditMeeting.StudentName" />
+            </div>
+            <div class="mb-3">
+                <p class="mb-1">
+                    Markera som bokad
+                </p>
+                <InputCheckbox @bind-Value="ViewModel.SelectedEditMeeting.IsBooked" />
+            </div>
+        </EditForm>
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideEditModalClick">Close</Button>
+        <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.UpdateMeetingAsync(ViewModel.SelectedEditMeeting)">Spara</Button>
     </FooterTemplate>
 </Modal>
 
@@ -117,18 +168,30 @@
 
     }
 
-    @code {
-        private Modal addNewMeetingModal;
 
-        private async Task OnShowModalClick()
-        {
-            await addNewMeetingModal?.ShowAsync();
-        }
+    private Modal addNewMeetingModal;
 
-        private async Task OnHideModalClick()
-        {
-            await addNewMeetingModal?.HideAsync();
-        }
+    private async Task OnShowModalClick()
+    {
+        await addNewMeetingModal?.ShowAsync();
     }
+
+    private async Task OnHideModalClick()
+    {
+        await addNewMeetingModal?.HideAsync();
+    }
+
+    private Modal editMeetingModal;
+
+    private async Task OnShowEditModalClick()
+    {
+        await editMeetingModal?.ShowAsync();
+    }
+
+    private async Task OnHideEditModalClick()
+    {
+        await editMeetingModal?.HideAsync();
+    }
+
 
 }
