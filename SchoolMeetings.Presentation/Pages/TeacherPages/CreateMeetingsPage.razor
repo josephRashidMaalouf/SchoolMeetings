@@ -82,7 +82,7 @@
                             }
                         </td>
                         <td style="text-align: center;">
-                            <Button class="btn-primary mb-1">Avboka</Button>
+                            <Button class="btn-primary mb-1" @onclick="async () => await ViewModel.CancelMeeting(context)">Avboka</Button>
                             <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeetingAsync(context)">Ta bort</Button>
                         </td>
                     </tr>

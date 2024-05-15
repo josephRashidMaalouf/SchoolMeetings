@@ -10,9 +10,9 @@ using SchoolMeetings.Domain.Interfaces;
 
 namespace SchoolMeetings.Presentation.Models.ViewModels.TeacherViewModels;
 
-public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
+public class CreateMeetingsViewModel(IClientMeetingService clientMeetingService )
 {
-    private readonly IMeetingService _clientMeetingService = clientMeetingService;
+    private readonly IClientMeetingService _clientMeetingService = clientMeetingService;
 
     public DateTime SelectedDate { get; set; }
     public string LoggedInTeacherEmail { get; set; } = string.Empty;
@@ -124,7 +124,22 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
             UnBookedMeetings.Remove(meeting);
     }
 
-    
+    public async Task CancelMeeting(Meeting meeting)
+    {
+        var successStatus = await _clientMeetingService.CancelMeeting(meeting.Id);
+
+        if(successStatus is false) 
+            return;
+
+        meeting.Parents = new();
+        meeting.StudentName = string.Empty;
+        meeting.IsBooked = false;
+
+        BookedMeetings.Remove(meeting);
+        UnBookedMeetings.Add(meeting);
+    }
+
+
 
 
 }

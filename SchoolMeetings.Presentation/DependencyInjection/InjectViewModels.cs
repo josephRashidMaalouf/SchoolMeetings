@@ -14,7 +14,7 @@ public static class InjectViewModels
         services.AddScoped<TeacherCalendarViewModel>();
         services.AddScoped<CreateMeetingsViewModel>();
 
-        services.AddScoped<IMeetingService, ClientMeetingService>();
+        services.AddScoped<IClientMeetingService, ClientMeetingService>();
 
         return services;
     }

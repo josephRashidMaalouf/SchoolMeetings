@@ -99,12 +99,15 @@ public static class MeetingEndPoints
 
     public static async Task<IResult> CancelAsync(IMeetingService meetingService, string meetingId)
     {
+        //TODO: refactor code to service class
         var meeting = await meetingService.GetByIdAsync(meetingId);
 
         if (meeting is null)
             return Results.NotFound($"No meeting with id {meetingId} was found");
 
         meeting.IsBooked = false;
+        meeting.Parents = new();
+        meeting.StudentName = string.Empty;
 
         var updateSuccess = await meetingService.UpdateAsync(meeting);
 

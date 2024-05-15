@@ -4,10 +4,14 @@ using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
 using System.Net.Http;
 using System.Net.Http.Json;
+using DnsClient.Protocol;
+using System.Text;
+using System.Text.Json;
+using MongoDB.Bson.IO;
 
 namespace SchoolMeetings.Application.Services.Presentation;
 
-public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
+public class ClientMeetingService(IHttpClientFactory factory) : IClientMeetingService
 {
     private readonly HttpClient _httpClient = factory.CreateClient("SchoolMeetingsApi");
     public Task<ICollection<Meeting>> GetAllAsync()
@@ -105,5 +109,18 @@ public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
         var result = await response.Content.ReadFromJsonAsync<List<Meeting>>();
 
         return result;
+    }
+
+    public async Task<bool> CancelMeeting(string meetingId)
+    {
+        
+
+        //TODO: Put kommer inte fungera, kanske delete req istället? fundera på saken
+        var response = await _httpClient.PutAsync($"/meetings/{meetingId}");
+
+        var result = await response.Content.ReadFromJsonAsync<bool>();
+
+        return result;
+
     }
 }
