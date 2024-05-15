@@ -1,4 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using System.Text.Json;
 using SchoolMeetings.Presentation.Models.Calendar;
 using SchoolMeetings.Presentation.Models.ViewModels.Calendars;
 using SchoolMeetings.Presentation.Pages.Calendar;
@@ -65,8 +66,48 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
         NewMeeting = new();
     }
 
-    public async Task ManualBookMeetingAsync(Meeting meeting)
+    public async Task ManualBookMeetingAsync()
     {
+        var parentOne = new Parent()
+        {
+            Name = BookMeetingModel.ParentName1
+        };
+        if(string.IsNullOrWhiteSpace(BookMeetingModel.ParentEmail1) is false)
+            parentOne.Email = BookMeetingModel.ParentEmail1;
+        if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentPhone1) is false)
+            parentOne.PhoneNumber = BookMeetingModel.ParentPhone1;
+
+        var parentTwo = new Parent();
+        if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentName2) is false)
+            parentTwo.Name = BookMeetingModel.ParentName2;
+        if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentEmail2) is false)
+            parentTwo.Email = BookMeetingModel.ParentEmail2;
+        if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentPhone2) is false)
+            parentTwo.PhoneNumber = BookMeetingModel.ParentPhone2;
+
+        SelectedManualBookMeeting.Parents ??= new();
+        //Add Parent(s)
+        SelectedManualBookMeeting.Parents.Add(parentOne);
+        if(string.IsNullOrWhiteSpace(parentTwo.Name) is false)
+            SelectedManualBookMeeting.Parents.Add(parentTwo);
+        //Add student
+        SelectedManualBookMeeting.StudentName = BookMeetingModel.NameOfStudent;
+
+        //Mark as booked
+        SelectedManualBookMeeting.IsBooked = true;
+
+
+        var updateWasSuccessful = await _clientMeetingService.UpdateAsync(SelectedManualBookMeeting);
+
+        //TODO: Implement something to tell the user that the update did not work
+        if (updateWasSuccessful is false)
+            return;
+
+        UnBookedMeetings.Remove(SelectedManualBookMeeting);
+        BookedMeetings.Add(SelectedManualBookMeeting);
+
+        SelectedManualBookMeeting = new();
+        BookMeetingModel = new();
 
     }
 

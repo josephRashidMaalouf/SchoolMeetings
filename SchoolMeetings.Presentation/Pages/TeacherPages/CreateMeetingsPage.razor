@@ -1,11 +1,11 @@
 ﻿@page "/create-meetings/{SelectedDate}"
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
-@using SchoolMeetings.Domain.Entities
+
 @inject CreateMeetingsViewModel ViewModel
 @inject NavigationManager NavigationManager
 @inject IAccountManagement Acct
 @attribute [Authorize]
 
+<!--Unbooked meetings-->
 <Card class="mb-3">
     <CardHeader class="bg-primary text-light text-center">
         Dina bokningsbara tider
@@ -39,6 +39,8 @@
         <Button class="btn-primary" @onclick="OnShowModalClick" style="width: 100%;">Lägg till</Button>
     </CardFooter>
 </Card>
+
+<!--Booked meetings-->
 <Card class="mb-3">
     <CardHeader class="bg-primary text-light text-center">
         Dina bokade tider
@@ -64,12 +66,23 @@
                             {
                                 @foreach (var parent in @context.Parents)
                                 {
-                                    <p style="display: inline;">@parent </p>
+
+
+                                    <p><b>@parent.Name</b> </p>
+                                    <p>@parent.PhoneNumber </p>
+                                    if (parent.Email is not null)
+                                    {
+                                        SetMailLink(parent.Email);
+                                        <a href="@_mailLink">@parent.Email</a>
+                                    }
+                                    <br />
+                                    <br />
+
                                 }
                             }
                         </td>
                         <td style="text-align: center;">
-                            <Button class="btn-primary mb-1">Ändra</Button>
+                            <Button class="btn-primary mb-1">Avboka</Button>
                             <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeetingAsync(context)">Ta bort</Button>
                         </td>
                     </tr>
@@ -99,7 +112,7 @@
     <BodyTemplate>
         <EditForm Model="ViewModel.BookMeetingModel">
             <div class="mb-3">
-                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentName1" class="form-control" Placeholder="Vårdnadshavare 1 (obligatorisk)"/>
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentName1" class="form-control" Placeholder="Vårdnadshavare 1 (obligatorisk)" />
             </div>
             <div class="mb-3">
                 <InputText @bind-Value="ViewModel.BookMeetingModel.ParentPhone1" class="form-control" Placeholder="Vårdnadshavare 1 telefon" />
@@ -119,15 +132,15 @@
             <div class="mb-3">
                 <InputText @bind-Value="ViewModel.BookMeetingModel.NameOfStudent" class=" form-control" Placeholder="Elevens namn" />
             </div>
-            
-        </EditForm>
-        
 
-        
+        </EditForm>
+
+
+
     </BodyTemplate>
     <FooterTemplate>
         <Button Color="ButtonColor.Secondary" @onclick="OnHideEditModalClick">Stäng</Button>
-        <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.ManualBookMeetingAsync(ViewModel.SelectedManualBookMeeting)">Spara</Button>
+        <Button Color="ButtonColor.Primary" @onclick="ViewModel.ManualBookMeetingAsync">Spara</Button>
     </FooterTemplate>
 </Modal>
 
@@ -135,6 +148,13 @@
 @code {
     [Parameter]
     public string? SelectedDate { get; set; }
+
+    string _mailLink = "";
+
+    void SetMailLink(string mail)
+    {
+        _mailLink = $"mailto:{mail}";
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -178,6 +198,7 @@
 
     private async Task OnHideEditModalClick()
     {
+        ViewModel.SelectedManualBookMeeting = new();
         await editMeetingModal?.HideAsync();
     }
 
