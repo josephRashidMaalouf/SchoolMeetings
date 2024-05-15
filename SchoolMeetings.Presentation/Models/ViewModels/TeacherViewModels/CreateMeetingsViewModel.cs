@@ -19,9 +19,8 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
     public TimeOnly NewMeetingStart { get; set; } = new();
     public TimeOnly NewMeetingEnd { get; set; } = new();
 
-    public Meeting SelectedEditMeeting { get; set; } = new();
-    public TimeOnly EditMeetingStart { get; set; } = new();
-    public TimeOnly EditMeetingEnd { get; set; } = new();
+    public BookMeetingModel BookMeetingModel { get; set; } = new();
+    public Meeting SelectedManualBookMeeting { get; set; } = new();
 
     public List<Meeting> BookedMeetings { get; set; } = new();
     public List<Meeting> UnBookedMeetings { get; set; } = new();
@@ -66,7 +65,7 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
         NewMeeting = new();
     }
 
-    public async Task UpdateMeetingAsync(Meeting meeting)
+    public async Task ManualBookMeetingAsync(Meeting meeting)
     {
 
     }

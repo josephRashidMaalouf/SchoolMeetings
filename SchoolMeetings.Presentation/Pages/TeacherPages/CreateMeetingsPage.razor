@@ -90,30 +90,44 @@
         </EditForm>
     </BodyTemplate>
     <FooterTemplate>
-        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Close</Button>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Stäng</Button>
         <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.AddNewMeetingAsync(ViewModel.LoggedInTeacherEmail)">Lägg till</Button>
     </FooterTemplate>
 </Modal>
 
 <Modal @ref="editMeetingModal" Title="Modal title">
     <BodyTemplate>
-        <EditForm Model="ViewModel.SelectedEditMeeting">
-            
+        <EditForm Model="ViewModel.BookMeetingModel">
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentName1" class="form-control" Placeholder="Vårdnadshavare 1 (obligatorisk)"/>
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentPhone1" class="form-control" Placeholder="Vårdnadshavare 1 telefon" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentEmail1" class=" form-control" Placeholder="Vårdnadshavare 1 email" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentName2" class=" form-control" Placeholder="Vårdnadshavare 2" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentPhone2" class=" form-control" Placeholder="Vårdnadshavare 2 telefon" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentEmail2" class=" form-control" Placeholder="Vårdnadshavare 2 email" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.NameOfStudent" class=" form-control" Placeholder="Elevens namn" />
+            </div>
             
         </EditForm>
         
 
-        @* <p>@ViewModel.SelectedEditMeeting.Id</p>
-        <EditForm Model="ViewModel.SelectedEditMeeting">
-            <div class="mb-3">
-                <p>Starttid</p>
-                <TimeInput class="form-control" @bind-Value="ViewModel.SelectedEditMeeting.MeetingStart"></TimeInput>
-            </div>
-        </EditForm> *@
+        
     </BodyTemplate>
     <FooterTemplate>
-        <Button Color="ButtonColor.Secondary" @onclick="OnHideEditModalClick">Close</Button>
-        <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.UpdateMeetingAsync(ViewModel.SelectedEditMeeting)">Spara</Button>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideEditModalClick">Stäng</Button>
+        <Button Color="ButtonColor.Primary" @onclick="async () => await ViewModel.ManualBookMeetingAsync(ViewModel.SelectedManualBookMeeting)">Spara</Button>
     </FooterTemplate>
 </Modal>
 
@@ -157,13 +171,7 @@
 
     private async Task OnShowEditModalClick(Meeting meeting)
     {
-        ViewModel.SelectedEditMeeting = meeting;
-        
-        var meetingStartTime = meeting.MeetingStart.TimeOfDay;
-        ViewModel.EditMeetingStart = new TimeOnly(meetingStartTime.Ticks);
-
-        var meetingEndTime = meeting.MeetingStart.TimeOfDay;
-        ViewModel.EditMeetingEnd = new TimeOnly(meetingEndTime.Ticks);
+        ViewModel.SelectedManualBookMeeting = meeting;
 
         await editMeetingModal?.ShowAsync();
     }
