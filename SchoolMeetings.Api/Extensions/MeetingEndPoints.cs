@@ -17,7 +17,7 @@ public static class MeetingEndPoints
         group.MapGet("/{id}", GetByIdAsync).RequireAuthorization();
 
         group.MapPut("/book/{meetingId}", BookAsync);
-        group.MapPut("/cancel/{meetingId}", CancelAsync);
+        group.MapPut("/cancel", CancelAsync);
         group.MapPut("/", UpdateAsync).RequireAuthorization();
 
         group.MapPost("/", AddAsync).RequireAuthorization();
@@ -97,24 +97,14 @@ public static class MeetingEndPoints
         return Results.Ok(updateSuccess);
     }
 
-    public static async Task<IResult> CancelAsync(IMeetingService meetingService, string meetingId, Meeting cancelMeeting)
+    public static async Task<IResult> CancelAsync(IMeetingService meetingService, Meeting meeting)
     {
-        //TODO: refactor code to service class
-        var meeting = await meetingService.GetByIdAsync(meetingId);
+        var canceledMeeting = await meetingService.CancelMeeting(meeting);
 
-        if (meeting is null)
-            return Results.NotFound($"No meeting with id {meetingId} was found");
-
-        meeting.IsBooked = false;
-        meeting.Parents = new();
-        meeting.StudentName = string.Empty;
-
-        var updateSuccess = await meetingService.UpdateAsync(meeting);
-
-        if (!updateSuccess)
+        if (canceledMeeting is null)
             return Results.UnprocessableEntity("Update failed");
 
-        return Results.Ok(updateSuccess);
+        return Results.Ok(canceledMeeting);
     }
 
     #endregion

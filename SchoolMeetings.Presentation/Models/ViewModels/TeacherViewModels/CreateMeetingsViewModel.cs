@@ -10,9 +10,9 @@ using SchoolMeetings.Domain.Interfaces;
 
 namespace SchoolMeetings.Presentation.Models.ViewModels.TeacherViewModels;
 
-public class CreateMeetingsViewModel(IClientMeetingService clientMeetingService )
+public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
 {
-    private readonly IClientMeetingService _clientMeetingService = clientMeetingService;
+    private readonly IMeetingService _clientMeetingService = clientMeetingService;
 
     public DateTime SelectedDate { get; set; }
     public string LoggedInTeacherEmail { get; set; } = string.Empty;
@@ -23,7 +23,7 @@ public class CreateMeetingsViewModel(IClientMeetingService clientMeetingService 
     public BookMeetingModel BookMeetingModel { get; set; } = new();
     public Meeting SelectedManualBookMeeting { get; set; } = new();
 
-    public List<Meeting> BookedMeetings { get; set; } = new();
+    public List<Meeting> BookedMeetings { get; set; } = [];
     public List<Meeting> UnBookedMeetings { get; set; } = new();
 
 
@@ -126,17 +126,15 @@ public class CreateMeetingsViewModel(IClientMeetingService clientMeetingService 
 
     public async Task CancelMeeting(Meeting meeting)
     {
-        var successStatus = await _clientMeetingService.CancelMeeting(meeting.Id);
+        var canceledMeeting = await _clientMeetingService.CancelMeeting(meeting);
 
-        if(successStatus is false) 
+        if(canceledMeeting is null) 
             return;
 
-        meeting.Parents = new();
-        meeting.StudentName = string.Empty;
-        meeting.IsBooked = false;
+        var meetingFromList = BookedMeetings.Find(m => m.Id == canceledMeeting.Id);
 
-        BookedMeetings.Remove(meeting);
-        UnBookedMeetings.Add(meeting);
+        BookedMeetings.Remove(meetingFromList!);
+        UnBookedMeetings.Add(canceledMeeting);
     }
 
 

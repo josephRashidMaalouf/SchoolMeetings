@@ -11,7 +11,7 @@ using MongoDB.Bson.IO;
 
 namespace SchoolMeetings.Application.Services.Presentation;
 
-public class ClientMeetingService(IHttpClientFactory factory) : IClientMeetingService
+public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
 {
     private readonly HttpClient _httpClient = factory.CreateClient("SchoolMeetingsApi");
     public Task<ICollection<Meeting>> GetAllAsync()
@@ -40,9 +40,9 @@ public class ClientMeetingService(IHttpClientFactory factory) : IClientMeetingSe
         if (response.IsSuccessStatusCode is false)
             return null;
 
-        var newlyAddedMeeting = response.Content.ReadFromJsonAsync<Meeting>();
+        var newlyAddedMeeting = await response.Content.ReadFromJsonAsync<Meeting>();
 
-        return meeting;
+        return newlyAddedMeeting;
     }
 
     public async Task<bool> UpdateAsync(Meeting meeting)
@@ -111,16 +111,15 @@ public class ClientMeetingService(IHttpClientFactory factory) : IClientMeetingSe
         return result;
     }
 
-    public async Task<bool> CancelMeeting(string meetingId)
+    public async Task<Meeting?> CancelMeeting(Meeting meeting)
     {
+        var response = await _httpClient.PutAsJsonAsync<Meeting>("/meetings/cancel", meeting);
+
+        if(response.IsSuccessStatusCode is false)
+            return null;
+
+        var result = await response.Content.ReadFromJsonAsync<Meeting>();
         
-
-        //TODO: Put kommer inte fungera, kanske delete req istället? fundera på saken
-        var response = await _httpClient.PutAsJsonAsync<Meeting>($"/meetings/{meetingId}", new Meeting());
-
-        var result = await response.Content.ReadFromJsonAsync<bool>();
-
         return result;
-
     }
 }

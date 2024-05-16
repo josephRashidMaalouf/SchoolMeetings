@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
+using SharpCompress.Common;
 
 
 namespace SchoolMeetings.Application.Services.Api;
@@ -68,5 +69,20 @@ public class ApiMeetingService(IMeetingRepository metingRepository) : IMeetingSe
         var meetings = await _metingRepository.GetBookedByTeacherEmailAsync(teacherEmail);
 
         return meetings;
+    }
+
+    public async Task<Meeting?> CancelMeeting(Meeting meeting)
+    {
+        meeting.Parents = [];
+        meeting.StudentName = string.Empty;
+        meeting.IsBooked = false;
+
+        var updateSuccess = await _metingRepository.UpdateAsync(meeting, meeting.Id);
+
+        if (updateSuccess is false)
+        {
+            return null;
+        }
+        return meeting;
     }
 }

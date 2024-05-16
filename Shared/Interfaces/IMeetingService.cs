@@ -9,5 +9,6 @@ public interface IMeetingService : ICrud<Meeting, string>
     Task<ICollection<Meeting>?> GetAllByTeacherEmailAndDateAsync(string teacherEmail, string date);
     Task<ICollection<Meeting>?> GetUnbookedByTeacherEmailAsync(string teacherEmail);
     Task<ICollection<Meeting>?> GetBookedByTeacherEmailAsync(string teacherEmail);
+    Task<Meeting?> CancelMeeting(Meeting meeting);
 
 }
