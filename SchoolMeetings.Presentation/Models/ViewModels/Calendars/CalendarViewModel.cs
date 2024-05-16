@@ -10,7 +10,7 @@ public class CalendarViewModel
     public int MonthsAway { get; set; } = 0;
 
 
-    public async Task GenerateMonth(int monthsAwayFromNow)
+    public virtual async Task GenerateMonth(int monthsAwayFromNow)
     {
         Month = new MonthModel();
         Month.Year = DateTime.UtcNow.AddMonths(monthsAwayFromNow).Year.ToString();
@@ -19,10 +19,12 @@ public class CalendarViewModel
 
         DateTime monthStart = new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, 1)
             .AddMonths(MonthsAway);
+
         Month.MonthEnd = monthStart
             .AddMonths(1)
         .AddDays(-1);
 
+        Month.MonthNumber = monthStart.Month;
         Month.MonthName = Enum.GetName(typeof(MonthNames), monthStart.Month)!;
 
         Month.NumOfDummyColumns = (int)monthStart.DayOfWeek;

@@ -89,6 +89,18 @@ public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
         return result;
     }
 
+    public async Task<ICollection<Meeting>?> GetAllByTeacherEmailAndMonthAsync(string teacherEmail, string date)
+    {
+        var response = await _httpClient.GetAsync($"/meetings/all/by-month?teacherEmail={teacherEmail}&date={date}");
+
+        if (response.IsSuccessStatusCode is false)
+            return null;
+
+        var result = await response.Content.ReadFromJsonAsync<List<Meeting>>();
+
+        return result;
+    }
+
     public async Task<ICollection<Meeting>?> GetUnbookedByTeacherEmailAsync(string teacherEmail)
     {
         var response = await _httpClient.GetAsync($"/meetings/unbooked/{teacherEmail}");

@@ -65,5 +65,25 @@ public class MeetingsRepository(string collectionName) : MongoRepositoryBase<Mee
         return await results.ToListAsync();
     }
 
+    public async Task<ICollection<Meeting>> GetAllByTeacherEmailAndMonthAsync(string teacherEmail, string date)
+    {
+        var collection = ConnectToMongo<Meeting>();
 
+        DateTime parsedDate = DateTime.Parse(date);
+        var year = parsedDate.Year;
+        var month = parsedDate.Month;
+        var monthAndYearDateStart = new DateTime(year, month, 1);
+        var monthAndYearDateEnd = monthAndYearDateStart.AddMonths(1);
+
+        var dateFilter = Builders<Meeting>.Filter.Gte("MeetingStart", monthAndYearDateStart) &
+                         Builders<Meeting>.Filter.Lt("MeetingStart", monthAndYearDateEnd);
+
+        var teacherFilter = Builders<Meeting>.Filter.Eq("TeacherEmail", teacherEmail);
+
+        var filter = Builders<Meeting>.Filter.And(teacherFilter, dateFilter);
+
+        var results = await collection.FindAsync(filter);
+
+        return await results.ToListAsync();
+    }
 }

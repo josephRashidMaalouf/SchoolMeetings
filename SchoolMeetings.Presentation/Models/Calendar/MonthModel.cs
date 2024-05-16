@@ -5,6 +5,7 @@ namespace SchoolMeetings.Presentation.Models.Calendar;
 public class MonthModel
 {
     public string MonthName { get; set; } = string.Empty;
+    public int MonthNumber { get; set; }
     public DateTime MonthEnd { get; set; }
     public string Year { get; set; } = string.Empty;
     public int NumOfDummyColumns { get; set; }
