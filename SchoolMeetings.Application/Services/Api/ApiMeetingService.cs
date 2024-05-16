@@ -67,6 +67,13 @@ public class ApiMeetingService(IMeetingRepository metingRepository) : IMeetingSe
 
     }
 
+    public async Task<ICollection<Meeting>?> GetUnBookedByTeacherEmailAndMonthAsync(string teacherEmail, string date)
+    {
+        var meetings = await _metingRepository.GetUnBookedByTeacherEmailAndMonthAsync(teacherEmail, date);
+
+        return meetings;
+    }
+
     public async Task<ICollection<Meeting>?> GetUnbookedByTeacherEmailAsync(string teacherEmail)
     {
         var meetings = await _metingRepository.GetUnbookedByTeacherEmailAsync(teacherEmail);

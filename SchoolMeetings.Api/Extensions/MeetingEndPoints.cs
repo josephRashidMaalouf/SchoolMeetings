@@ -15,6 +15,7 @@ public static class MeetingEndPoints
         group.MapGet("/booked/{teacherEmail}", GetAllBookedByTeacherEmailAsync).RequireAuthorization();
         group.MapGet("/all/{teacherEmail}", GetAllByTeacherEmailAsync).RequireAuthorization();
         group.MapGet("/all/by-month", GetAllByTeacherEmailAndMonthAsync).RequireAuthorization();
+        group.MapGet("/unbooked/by-month", GetUnbookedByTeacherEmailAndMonthAsync);
         group.MapGet("/all/", GetAllByTeacherEmailAndDateAsync).RequireAuthorization();
         group.MapGet("/{id}", GetByIdAsync).RequireAuthorization();
 
@@ -62,6 +63,14 @@ public static class MeetingEndPoints
         string teacherEmail, string date)
     {
         var meetings = await meetingService.GetAllByTeacherEmailAndMonthAsync(teacherEmail, date);
+
+        return Results.Ok(meetings);
+    }
+
+    public static async Task<IResult> GetUnbookedByTeacherEmailAndMonthAsync(IMeetingService meetingService,
+        string teacherEmail, string date)
+    {
+        var meetings = await meetingService.GetUnBookedByTeacherEmailAndMonthAsync(teacherEmail, date);
 
         return Results.Ok(meetings);
     }
