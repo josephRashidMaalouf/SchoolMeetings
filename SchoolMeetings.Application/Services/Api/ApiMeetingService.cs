@@ -1,4 +1,6 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using SchoolMeetings.Domain.Dtos;
 using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
 using SharpCompress.Common;
@@ -84,5 +86,50 @@ public class ApiMeetingService(IMeetingRepository metingRepository) : IMeetingSe
             return null;
         }
         return meeting;
+    }
+
+    public async Task<Meeting?> BookMeeting(BookMeetingDto meetingDto)
+    {
+        var parentOne = new Parent()
+        {
+            Name = meetingDto.ParentName1
+        };
+        if (string.IsNullOrWhiteSpace(meetingDto.ParentEmail1) is false)
+            parentOne.Email = meetingDto.ParentEmail1;
+        if (string.IsNullOrWhiteSpace(meetingDto.ParentPhone1) is false)
+            parentOne.PhoneNumber = meetingDto.ParentPhone1;
+
+        var parentTwo = new Parent();
+        if (string.IsNullOrWhiteSpace(meetingDto.ParentName2) is false)
+            parentTwo.Name = meetingDto.ParentName2;
+        if (string.IsNullOrWhiteSpace(meetingDto.ParentEmail2) is false)
+            parentTwo.Email = meetingDto.ParentEmail2;
+        if (string.IsNullOrWhiteSpace(meetingDto.ParentPhone2) is false)
+            parentTwo.PhoneNumber = meetingDto.ParentPhone2;
+
+        var meetingToBook = await _metingRepository.GetByIdAsync(meetingDto.MeetingId);
+
+        if (meetingToBook is null)
+            return null;
+
+        meetingToBook.Parents ??= [];
+        //Add Parent(s)
+        meetingToBook.Parents.Add(parentOne);
+        if (string.IsNullOrWhiteSpace(parentTwo.Name) is false)
+            meetingToBook.Parents.Add(parentTwo);
+        //Add student
+        meetingToBook.StudentName = meetingDto.NameOfStudent;
+
+        //Mark as booked
+        meetingToBook.IsBooked = true;
+
+        var updateSuccess = await _metingRepository.UpdateAsync(meetingToBook, meetingToBook.Id);
+
+        if (updateSuccess is false)
+        {
+            return null;
+        }
+
+        return meetingToBook;
     }
 }

@@ -8,6 +8,8 @@ using DnsClient.Protocol;
 using System.Text;
 using System.Text.Json;
 using MongoDB.Bson.IO;
+using SchoolMeetings.Domain.Dtos;
+using MongoDB.Driver;
 
 namespace SchoolMeetings.Application.Services.Presentation;
 
@@ -121,5 +123,18 @@ public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
         var result = await response.Content.ReadFromJsonAsync<Meeting>();
         
         return result;
+    }
+
+    public async Task<Meeting?> BookMeeting(BookMeetingDto meetingDto)
+    {
+        var response = await _httpClient.PutAsJsonAsync<BookMeetingDto>("/meetings/cancel", meetingDto);
+
+        if (response.IsSuccessStatusCode is false)
+            return null;
+
+        var result = await response.Content.ReadFromJsonAsync<Meeting>();
+
+        return result;
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using SchoolMeetings.Domain.Dtos;
 using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
 
@@ -16,7 +17,7 @@ public static class MeetingEndPoints
         group.MapGet("/all/", GetAllByTeacherEmailAndDateAsync).RequireAuthorization();
         group.MapGet("/{id}", GetByIdAsync).RequireAuthorization();
 
-        group.MapPut("/book/{meetingId}", BookAsync);
+        group.MapPut("/book", BookAsync);
         group.MapPut("/cancel", CancelAsync);
         group.MapPut("/", UpdateAsync).RequireAuthorization();
 
@@ -80,21 +81,14 @@ public static class MeetingEndPoints
         return Results.Ok(updateSuccess);
     }
 
-    public static async Task<IResult> BookAsync(IMeetingService meetingService, string meetingId)
+    public static async Task<IResult> BookAsync(IMeetingService meetingService, BookMeetingDto meetingDto)
     {
-        var meeting = await meetingService.GetByIdAsync(meetingId);
+        var meeting = await meetingService.BookMeeting(meetingDto);
 
         if (meeting is null)
-            return Results.NotFound($"No meeting with id {meetingId} was found");
-
-        meeting.IsBooked = true;
-
-        var updateSuccess = await meetingService.UpdateAsync(meeting);
-
-        if (!updateSuccess)
             return Results.UnprocessableEntity("Update failed");
 
-        return Results.Ok(updateSuccess);
+        return Results.Ok(meeting);
     }
 
     public static async Task<IResult> CancelAsync(IMeetingService meetingService, Meeting meeting)
