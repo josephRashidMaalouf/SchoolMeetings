@@ -5,6 +5,7 @@ using SchoolMeetings.Presentation.Models.ViewModels.Calendars;
 using SchoolMeetings.Presentation.Pages.Calendar;
 using SchoolMeetings.Application.Services;
 using SchoolMeetings.Application.Services.Presentation;
+using SchoolMeetings.Domain.Dtos;
 using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
 
@@ -68,43 +69,74 @@ public class CreateMeetingsViewModel(IMeetingService clientMeetingService )
 
     public async Task ManualBookMeetingAsync()
     {
-        var parentOne = new Parent()
+
+        //TODO: rensa här
+        //var parentOne = new Parent()
+        //{
+        //    Name = BookMeetingModel.ParentName1
+        //};
+        //if(string.IsNullOrWhiteSpace(BookMeetingModel.ParentEmail1) is false)
+        //    parentOne.Email = BookMeetingModel.ParentEmail1;
+        //if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentPhone1) is false)
+        //    parentOne.PhoneNumber = BookMeetingModel.ParentPhone1;
+
+        //var parentTwo = new Parent();
+        //if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentName2) is false)
+        //    parentTwo.Name = BookMeetingModel.ParentName2;
+        //if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentEmail2) is false)
+        //    parentTwo.Email = BookMeetingModel.ParentEmail2;
+        //if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentPhone2) is false)
+        //    parentTwo.PhoneNumber = BookMeetingModel.ParentPhone2;
+
+        //SelectedManualBookMeeting.Parents ??= new();
+        ////Add Parent(s)
+        //SelectedManualBookMeeting.Parents.Add(parentOne);
+        //if(string.IsNullOrWhiteSpace(parentTwo.Name) is false)
+        //    SelectedManualBookMeeting.Parents.Add(parentTwo);
+        ////Add student
+        //SelectedManualBookMeeting.StudentName = BookMeetingModel.NameOfStudent;
+
+        ////Mark as booked
+        //SelectedManualBookMeeting.IsBooked = true;
+
+
+        //var updateWasSuccessful = await _clientMeetingService.UpdateAsync(SelectedManualBookMeeting);
+
+        ////TODO: Implement something to tell the user that the update did not work
+        //if (updateWasSuccessful is false)
+        //    return;
+
+        var dto = new BookMeetingDto
         {
-            Name = BookMeetingModel.ParentName1
+            MeetingId = SelectedManualBookMeeting.Id,
+            ParentName1 = BookMeetingModel.ParentName1
         };
-        if(string.IsNullOrWhiteSpace(BookMeetingModel.ParentEmail1) is false)
-            parentOne.Email = BookMeetingModel.ParentEmail1;
+        if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentEmail1) is false)
+            dto.ParentEmail1 = BookMeetingModel.ParentEmail1;
         if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentPhone1) is false)
-            parentOne.PhoneNumber = BookMeetingModel.ParentPhone1;
+            dto.ParentPhone1 = BookMeetingModel.ParentPhone1;
 
-        var parentTwo = new Parent();
         if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentName2) is false)
-            parentTwo.Name = BookMeetingModel.ParentName2;
+            dto.ParentName2 = BookMeetingModel.ParentName2;
         if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentEmail2) is false)
-            parentTwo.Email = BookMeetingModel.ParentEmail2;
+            dto.ParentEmail2 = BookMeetingModel.ParentEmail2;
         if (string.IsNullOrWhiteSpace(BookMeetingModel.ParentPhone2) is false)
-            parentTwo.PhoneNumber = BookMeetingModel.ParentPhone2;
+            dto.ParentPhone2 = BookMeetingModel.ParentPhone2;
 
-        SelectedManualBookMeeting.Parents ??= new();
-        //Add Parent(s)
-        SelectedManualBookMeeting.Parents.Add(parentOne);
-        if(string.IsNullOrWhiteSpace(parentTwo.Name) is false)
-            SelectedManualBookMeeting.Parents.Add(parentTwo);
-        //Add student
-        SelectedManualBookMeeting.StudentName = BookMeetingModel.NameOfStudent;
+        if (string.IsNullOrWhiteSpace(BookMeetingModel.NameOfStudent) is false)
+            dto.NameOfStudent = BookMeetingModel.NameOfStudent;
 
-        //Mark as booked
-        SelectedManualBookMeeting.IsBooked = true;
+        var bookedMeeting = await _clientMeetingService.BookMeeting(dto);
 
-
-        var updateWasSuccessful = await _clientMeetingService.UpdateAsync(SelectedManualBookMeeting);
-
-        //TODO: Implement something to tell the user that the update did not work
-        if (updateWasSuccessful is false)
+        //TODO: Let user know update failed
+        if (bookedMeeting is null)
             return;
 
         UnBookedMeetings.Remove(SelectedManualBookMeeting);
-        BookedMeetings.Add(SelectedManualBookMeeting);
+        BookedMeetings.Add(bookedMeeting);
+
+        //UnBookedMeetings.Remove(SelectedManualBookMeeting);
+        //BookedMeetings.Add(SelectedManualBookMeeting);
 
         SelectedManualBookMeeting = new();
         BookMeetingModel = new();

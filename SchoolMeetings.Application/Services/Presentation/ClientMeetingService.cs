@@ -127,7 +127,7 @@ public class ClientMeetingService(IHttpClientFactory factory) : IMeetingService
 
     public async Task<Meeting?> BookMeeting(BookMeetingDto meetingDto)
     {
-        var response = await _httpClient.PutAsJsonAsync<BookMeetingDto>("/meetings/cancel", meetingDto);
+        var response = await _httpClient.PutAsJsonAsync<BookMeetingDto>("/meetings/book", meetingDto);
 
         if (response.IsSuccessStatusCode is false)
             return null;
