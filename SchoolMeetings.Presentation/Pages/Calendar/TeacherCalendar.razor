@@ -53,14 +53,33 @@
                     continue;
 
                 }
-                <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
+                @* <Button class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
+
                     @day.Date
                     @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
                     {
                         <Badge Color="BadgeColor.Danger"
-                               IndicatorType="BadgeIndicatorType.RoundedPill">
-                            1
+                               Position="Position.Relative"
+                               Placement="BadgePlacement.TopCenter"
+                               IndicatorType="BadgeIndicatorType.RoundedPill"
+                               VisuallyHiddenText="unread messages">@ViewModel.Month.BookableDates.Where(b => b == day.Date).Count()</Badge>
+
+                    }
+
+                </Button> *@
+                <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
+                    @day.Date
+                    @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
+                    {
+
+                        <Badge Color="BadgeColor.Danger"
+                               Position="Position.Relative"
+                               Placement="BadgePlacement.TopCenter"
+                               IndicatorType="BadgeIndicatorType.RoundedPill"
+                               VisuallyHiddenText="unread messages">
+                            @ViewModel.Month.BookableDates.Count(b => b == day.Date)
                         </Badge>
+
                     }
                 </div>
             }
@@ -83,6 +102,8 @@
 
         if (isAuthenticated is false)
             NavigationManager.NavigateTo("/");
+
+        ViewModel.LoggedInTeacherEmail = await Acct.GetUserEmailAsync();
 
         await ViewModel.GenerateMonth(0);
 
