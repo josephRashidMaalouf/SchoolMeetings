@@ -1,0 +1,20 @@
+﻿@page "/book-meeting-page/{TeacherEmail}"
+
+@inject BookMeetingViewModel ViewModel
+
+<h3>BookMeetingPage</h3>
+
+@code {
+    
+    [Parameter]
+    public string? TeacherEmail { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+
+
+    }
+
+}

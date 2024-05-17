@@ -26,10 +26,15 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Account\Login.razor" />
+    <_ContentIncludedByDefault Remove="Pages\ParentPages\BookMeetingPage.razor" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SchoolMeetings.Application\SchoolMeetings.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\ParentPages\BookMeetingPage.razor" />
   </ItemGroup>
 
 </Project>
