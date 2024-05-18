@@ -2,7 +2,38 @@
 
 @inject BookMeetingViewModel ViewModel
 
-<h3>BookMeetingPage</h3>
+<Card class="mb-3">
+    <CardHeader class="bg-primary text-light text-center">
+        Välj en tid för utvecklingssamtal
+    </CardHeader>
+    <CardBody>
+        <table class="table table-sm table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Datum</th>
+                <th scope="col" style="text-align: left; ">Tid</th>
+                    <th scope="col"></th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            <Virtualize Items="ViewModel.UnbookedMeetings">
+                <tr>
+                        <td>@context.MeetingEnd.ToShortDateString()</td>
+                        <td>@context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()</td>
+                    <td style="text-align: right;">
+                        <Button class="btn-primary">Boka</Button>
+                    </td>
+                </tr>
+            </Virtualize>
+
+
+            </tbody>
+        </table>
+    </CardBody>
+    
+</Card>
 
 @code {
     

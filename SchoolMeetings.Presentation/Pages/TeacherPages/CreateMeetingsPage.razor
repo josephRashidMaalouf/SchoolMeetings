@@ -15,7 +15,7 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Tid</th>
-                    <th scope="col" style="text-align: right; padding-right: 80px;">Redigera</th>
+                    <th scope="col" style="text-align: right; padding-right: 80px;">Hantera</th>
 
                 </tr>
             </thead>
@@ -25,7 +25,7 @@
                     <tr>
                         <td>@context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()</td>
                         <td style="text-align: right;">
-                            <Button class="btn-primary" @onclick="async () => await OnShowEditModalClick(context)">Ändra</Button>
+                            <Button class="btn-primary" @onclick="async () => await OnShowEditModalClick(context)">Boka</Button>
                             <Button class="btn-danger" @onclick="async () => await ViewModel.DeleteMeetingAsync(context)">Ta bort</Button>
                         </td>
                     </tr>
