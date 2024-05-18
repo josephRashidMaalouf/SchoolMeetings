@@ -1,6 +1,7 @@
 ﻿using SchoolMeetings.Application.Services.Presentation;
 using SchoolMeetings.Domain.Interfaces;
 using SchoolMeetings.Presentation.Models.ViewModels.Calendars;
+using SchoolMeetings.Presentation.Models.ViewModels.ParentViewModels;
 using SchoolMeetings.Presentation.Models.ViewModels.TeacherViewModels;
 
 namespace SchoolMeetings.Presentation.DependencyInjection;
@@ -13,6 +14,7 @@ public static class InjectViewModels
         services.AddScoped<CalendarViewModel>();
         services.AddScoped<TeacherCalendarViewModel>();
         services.AddScoped<CreateMeetingsViewModel>();
+        services.AddScoped<BookMeetingViewModel>();
 
         services.AddScoped<IMeetingService, ClientMeetingService>();
 

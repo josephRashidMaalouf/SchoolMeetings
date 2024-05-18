@@ -1,4 +1,4 @@
-﻿@page "/book-meeting-page/{TeacherEmail}"
+﻿@page "/book-meeting/{TeacherEmail}/meetings"
 
 @inject BookMeetingViewModel ViewModel
 
@@ -12,8 +12,10 @@
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
+        //TODO: implement functionality that checks if teacheremail (link) is valid, and if not redirects to a not found page
 
 
+        await ViewModel.FetchUnbookedMeetings(TeacherEmail);
 
     }
 
