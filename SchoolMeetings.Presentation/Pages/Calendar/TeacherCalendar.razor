@@ -6,9 +6,9 @@
 @attribute [Authorize]
 
 
-<h3 class="m-3">Din kalender</h3>
+<h3 class="m-3 text-center">Din kalender</h3>
 
-<Card class="m-3" style="max-width: 400px;">
+<Card class="m-3">
     <CardHeader Color="CardColor.Primary">
         <div class="container">
             <div class="row">
@@ -34,12 +34,12 @@
             }
             @for (int i = 0; i < ViewModel.Month.NumOfDummyColumns - 1; i++)
             {
-                <div />
+                <div class="calendar-square"/>
             }
 
             @foreach (var day in ViewModel.Month.Days)
             {
-                if (ViewModel.Month.DateOfToday.Day == day.Date)
+                if (ViewModel.Month.DateOfToday.Day == day.Date && ViewModel.Month.MonthNumber == DateTime.UtcNow.Month)
                 {
                     <div class="text-center today" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
                         @day.Date
@@ -53,20 +53,7 @@
                     continue;
 
                 }
-                @* <Button class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
-
-                    @day.Date
-                    @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
-                    {
-                        <Badge Color="BadgeColor.Danger"
-                               Position="Position.Relative"
-                               Placement="BadgePlacement.TopCenter"
-                               IndicatorType="BadgeIndicatorType.RoundedPill"
-                               VisuallyHiddenText="unread messages">@ViewModel.Month.BookableDates.Where(b => b == day.Date).Count()</Badge>
-
-                    }
-
-                </Button> *@
+              
                 <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
                     @day.Date
                     @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
