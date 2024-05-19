@@ -12,7 +12,7 @@
             <tr>
                 <th scope="col">Datum</th>
                 <th scope="col" style="text-align: left; ">Tid</th>
-                    <th scope="col"></th>
+                <th scope="col"></th>
 
             </tr>
             </thead>
@@ -20,10 +20,10 @@
 
             <Virtualize Items="ViewModel.UnbookedMeetings">
                 <tr>
-                        <td>@context.MeetingEnd.ToShortDateString()</td>
-                        <td>@context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()</td>
+                    <td>@context.MeetingEnd.ToShortDateString()</td>
+                    <td>@context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()</td>
                     <td style="text-align: right;">
-                        <Button class="btn-primary">Boka</Button>
+                        <Button class="btn-primary" @onclick="async () => await OnShowBookModalClick(context)">Boka</Button>
                     </td>
                 </tr>
             </Virtualize>
@@ -34,6 +34,43 @@
     </CardBody>
     
 </Card>
+
+
+<Modal @ref="bookMeetingModal" Title="Modal title">
+    <BodyTemplate>
+        <EditForm Model="ViewModel.BookMeetingModel">
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentName1" class="form-control" Placeholder="Vårdnadshavare 1 (obligatorisk)" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentPhone1" class="form-control" Placeholder="Vårdnadshavare 1 telefon" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentEmail1" class=" form-control" Placeholder="Vårdnadshavare 1 email" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentName2" class=" form-control" Placeholder="Vårdnadshavare 2" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentPhone2" class=" form-control" Placeholder="Vårdnadshavare 2 telefon" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.ParentEmail2" class=" form-control" Placeholder="Vårdnadshavare 2 email" />
+            </div>
+            <div class="mb-3">
+                <InputText @bind-Value="ViewModel.BookMeetingModel.NameOfStudent" class=" form-control" Placeholder="Elevens namn" />
+            </div>
+
+        </EditForm>
+
+
+
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideBookModalClick">Stäng</Button>
+        <Button Color="ButtonColor.Primary" @onclick="ViewModel.BookMeeting">Boka</Button>
+    </FooterTemplate>
+</Modal>
 
 @code {
     
@@ -48,6 +85,21 @@
 
         await ViewModel.FetchUnbookedMeetings(TeacherEmail);
 
+    }
+
+    private Modal bookMeetingModal;
+
+    private async Task OnShowBookModalClick(Meeting meeting)
+    {
+        ViewModel.SelectedMeeting = meeting;
+
+        await bookMeetingModal?.ShowAsync();
+    }
+
+    private async Task OnHideBookModalClick()
+    {
+        ViewModel.SelectedMeeting = new();
+        await bookMeetingModal?.HideAsync();
     }
 
 }

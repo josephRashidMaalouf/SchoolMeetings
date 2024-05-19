@@ -108,7 +108,7 @@
     </FooterTemplate>
 </Modal>
 
-<Modal @ref="editMeetingModal" Title="Modal title">
+<Modal @ref="bookMeetingModal" Title="Modal title">
     <BodyTemplate>
         <EditForm Model="ViewModel.BookMeetingModel">
             <div class="mb-3">
@@ -187,19 +187,19 @@
         await addNewMeetingModal?.HideAsync();
     }
 
-    private Modal editMeetingModal;
+    private Modal bookMeetingModal;
 
     private async Task OnShowEditModalClick(Meeting meeting)
     {
         ViewModel.SelectedManualBookMeeting = meeting;
 
-        await editMeetingModal?.ShowAsync();
+        await bookMeetingModal?.ShowAsync();
     }
 
     private async Task OnHideEditModalClick()
     {
         ViewModel.SelectedManualBookMeeting = new();
-        await editMeetingModal?.HideAsync();
+        await bookMeetingModal?.HideAsync();
     }
 
 
