@@ -5,74 +5,122 @@
 
 @attribute [Authorize]
 
-
-<h3 class="m-3 text-center">Din kalender</h3>
-
-<Card class="m-3">
-    <CardHeader Color="CardColor.Primary">
-        <div class="container">
-            <div class="row">
-
-                <div class="col text-center">
-                    <Button @onclick="ViewModel.GoToPrevMonth">
-                        <Icon Name="IconName.ArrowLeft" />
-                    </Button>
-                    @ViewModel.Month.MonthName @ViewModel.Month.Year
-                    <Button @onclick="ViewModel.GoToNextMonth">
-                        <Icon Name="IconName.ArrowRight" />
-                    </Button>
-                </div>
-
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3 class="m-3 text-center">Så här fungerar det:</h3>
+            <ul class="list-group">
+                <li class="list-group-item">Klicka på ett datum för att lägga in lediga mötestider.</li>
+                <li class="list-group-item">En röd bubbla med ett tal i indikerar att du har mötestider på det datumet.</li>
+                <li class="list-group-item">Skicka denna länk till de som du vill ska kunna boka ett möte med dig: @_meetingLink</li>
+            </ul>
         </div>
-    </CardHeader>
-    <CardBody>
-        <section class="calendar-body">
-            @for (int i = 0; i < 7; i++)
-            {
-                <b class="m-1 text-center">@Enum.GetName(typeof(WeekDayLetters), i)</b>
-            }
-            @for (int i = 0; i < ViewModel.Month.NumOfDummyColumns - 1; i++)
-            {
-                <div class="calendar-square"/>
-            }
+    </div>
+    <div class="row">
+        <div class="col">
+            <h3 class="m-3 text-center">Din kalender</h3>
 
-            @foreach (var day in ViewModel.Month.Days)
-            {
-                if (ViewModel.Month.DateOfToday.Day == day.Date && ViewModel.Month.MonthNumber == DateTime.UtcNow.Month)
-                {
-                    <div class="text-center today" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
-                        @day.Date
-                        @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
-                        {
-                            <Badge Color="BadgeColor.Danger">
-                                @ViewModel.Month.BookableDates.Count;
-                            </Badge>
-                        }
+            <Card class="m-3">
+                <CardHeader Color="CardColor.Primary">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col text-center">
+                                <Button @onclick="ViewModel.GoToPrevMonth">
+                                    <Icon Name="IconName.ArrowLeft"/>
+                                </Button>
+                                @ViewModel.Month.MonthName @ViewModel.Month.Year
+                                <Button @onclick="ViewModel.GoToNextMonth">
+                                    <Icon Name="IconName.ArrowRight"/>
+                                </Button>
+                            </div>
+
+                        </div>
                     </div>
-                    continue;
+                </CardHeader>
+                <CardBody>
+                    <section class="calendar-body">
+                        @for (int i = 0; i < 7; i++)
+                        {
+                            <b class="m-1 text-center">@Enum.GetName(typeof(WeekDayLetters), i)</b>
+                        }
+                        @for (int i = 0; i < ViewModel.Month.NumOfDummyColumns - 1; i++)
+                        {
+                            <div class="calendar-square"/>
+                        }
 
-                }
-              
-                <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
-                    @day.Date
-                    @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
-                    {
+                        @foreach (var day in ViewModel.Month.Days)
+                        {
+                            if (ViewModel.Month.DateOfToday.Day == day.Date && ViewModel.Month.MonthNumber == DateTime.UtcNow.Month)
+                            {
+                                <div class="text-center today" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
+                                    @day.Date
+                                    @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
+                                    {
+                                        <Badge Color="BadgeColor.Danger">
+                                            @ViewModel.Month.BookableDates.Count;
+                                        </Badge>
+                                    }
+                                </div>
+                                continue;
 
-                        <Badge Color="BadgeColor.Danger"
-                               Position="Position.Relative"
-                               Placement="BadgePlacement.TopCenter"
-                               IndicatorType="BadgeIndicatorType.RoundedPill"
-                               VisuallyHiddenText="unread messages">
-                            @ViewModel.Month.BookableDates.Count(b => b == day.Date)
-                        </Badge>
+                            }
 
-                    }
-                </div>
-            }
-        </section>
-    </CardBody>
-</Card>
+                            <div class="text-center" @onclick="async () => await ViewModel.PickDateToCreateMeeting(day.Date)">
+                                @day.Date
+                                @if (ViewModel.Month.BookableDates.Any(d => d == day.Date))
+                                {
+
+                                    <Badge Color="BadgeColor.Danger"
+                                           Position="Position.Relative"
+                                           Placement="BadgePlacement.TopCenter"
+                                           IndicatorType="BadgeIndicatorType.RoundedPill"
+                                           VisuallyHiddenText="unread messages">
+                                        @ViewModel.Month.BookableDates.Count(b => b == day.Date)
+                                    </Badge>
+
+                                }
+                            </div>
+                        }
+                    </section>
+                </CardBody>
+            </Card>
+        </div>
+        <div class="col">
+            <h3 class="m-3 text-center">Översikt</h3>
+            <Card class="m-3">
+                <CardHeader Color="CardColor.Primary">
+                    <p class="text-center">Kommande möten</p>
+                </CardHeader>
+                <CardBody>
+                    <ul class="list-group">
+                        <li class="list-group-item">Tid</li>
+                        <li class="list-group-item">Tid</li>
+                        <li class="list-group-item">Tid</li>
+                        <li class="list-group-item">Tid</li>
+                    </ul>
+                </CardBody>
+
+            </Card>
+            <Card class="m-3">
+                <CardHeader Color="CardColor.Primary">
+                    <p class="text-center">Obokade tider</p>
+                </CardHeader>
+                <CardBody>
+                    <ul class="list-group">
+                        <li class="list-group-item">Tid</li>
+                        <li class="list-group-item">Tid</li>
+                        <li class="list-group-item">Tid</li>
+                        <li class="list-group-item">Tid</li>
+                    </ul>
+                </CardBody>
+
+            </Card>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -80,6 +128,7 @@
 
 
 @code {
+    string _meetingLink = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -90,7 +139,10 @@
         if (isAuthenticated is false)
             NavigationManager.NavigateTo("/");
 
+
         ViewModel.LoggedInTeacherEmail = await Acct.GetUserEmailAsync();
+
+        _meetingLink = $"https://localhost:7073/book-meeting/{ViewModel.LoggedInTeacherEmail}/meetings";
 
         await ViewModel.GenerateMonth(0);
 
