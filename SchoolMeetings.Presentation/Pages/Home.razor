@@ -4,9 +4,21 @@
 
 <AuthorizeView>
     <NotAuthorized>
-        <Login/>
 
-        <Register/>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <Login/>
+                    <Register/>
+                </div>
+                <div class="col">
+                    <img src="./media/meeting-picture.jpg" style="max-width: 80vh" />
+                </div>
+            </div>
+        </div>
+
+
     </NotAuthorized>
     <Authorized>
         <TeacherCalendar/>
