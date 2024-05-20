@@ -1,0 +1,20 @@
+﻿@page "/logout"
+@inject IAccountManagement Acct
+@inject NavigationManager NavigationManager
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        var isAuthenticated = await Acct.CheckAuthenticatedAsync();
+
+        if (isAuthenticated is false)
+            NavigationManager.NavigateTo("/");
+
+        await Acct.LogoutAsync();
+        NavigationManager.NavigateTo("/");
+
+    }
+
+}

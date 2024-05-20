@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Pages\Account\Login.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Account\Logout.razor" />
     <_ContentIncludedByDefault Remove="Pages\ParentPages\BookMeetingPage.razor" />
   </ItemGroup>
 
@@ -35,6 +36,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\ParentPages\BookMeetingPage.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\Account\Logout.razor" />
   </ItemGroup>
 
 </Project>
