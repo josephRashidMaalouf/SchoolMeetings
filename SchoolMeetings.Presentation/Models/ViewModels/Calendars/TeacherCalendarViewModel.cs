@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SchoolMeetings.Application.Services.Presentation;
+using SchoolMeetings.Domain.Entities;
 using SchoolMeetings.Domain.Interfaces;
 using Shared.Enums;
 using Shared.Models.Calendar;
@@ -11,6 +12,36 @@ public class TeacherCalendarViewModel(NavigationManager navigationManager, IMeet
     private readonly IMeetingService _meetingService = meetingService;
 
     public string LoggedInTeacherEmail { get; set; } = string.Empty;
+
+    public List<Meeting> BookedMeetings { get; set; } = [];
+    public List<Meeting> UnBookedMeetings { get; set; } = [];
+
+
+
+    public async Task FetchMeetingsByTeacher(string email)
+    {
+
+        var meetings = await _meetingService.GetAllByTeacherEmailAsync(email);
+
+        if (meetings is null)
+            return;
+
+        var bookedMeetings = meetings
+            .Where(m => m.IsBooked is true)
+            .Where(m => m.MeetingStart > DateTime.UtcNow)
+            .OrderBy(m => m.MeetingStart);
+        var unbookedMeetings = meetings
+            .Where(m => m.IsBooked is false)
+            .Where(m => m.MeetingStart > DateTime.UtcNow)
+            .OrderBy(m => m.MeetingStart); ;
+
+        BookedMeetings.Clear();
+        UnBookedMeetings.Clear();
+
+        BookedMeetings.AddRange(bookedMeetings);
+        UnBookedMeetings.AddRange(unbookedMeetings);
+
+    }
 
 
     public async Task PickDateToCreateMeeting(int day)

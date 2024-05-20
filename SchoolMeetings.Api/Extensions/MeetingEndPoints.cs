@@ -48,7 +48,7 @@ public static class MeetingEndPoints
 
     public static async Task<IResult> GetAllByTeacherEmailAsync(IMeetingService meetingService, string teacherEmail)
     {
-        var meetings = await meetingService.GetUnbookedByTeacherEmailAsync(teacherEmail);
+        var meetings = await meetingService.GetAllByTeacherEmailAsync(teacherEmail);
 
         return Results.Ok(meetings);
     }

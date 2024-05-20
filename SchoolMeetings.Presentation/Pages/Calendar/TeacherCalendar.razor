@@ -94,10 +94,12 @@
                 </CardHeader>
                 <CardBody>
                     <ul class="list-group">
-                        <li class="list-group-item">Tid</li>
-                        <li class="list-group-item">Tid</li>
-                        <li class="list-group-item">Tid</li>
-                        <li class="list-group-item">Tid</li>
+                        <Virtualize Items="ViewModel.BookedMeetings">
+                            <li class="list-group-item">
+                                <b>@context.MeetingStart.ToShortDateString()</b> @context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString() med @CreateMeetingParticipantString(context)
+                                
+                            </li>
+                        </Virtualize>
                     </ul>
                 </CardBody>
 
@@ -108,10 +110,11 @@
                 </CardHeader>
                 <CardBody>
                     <ul class="list-group">
-                        <li class="list-group-item">Tid</li>
-                        <li class="list-group-item">Tid</li>
-                        <li class="list-group-item">Tid</li>
-                        <li class="list-group-item">Tid</li>
+                        <Virtualize Items="ViewModel.UnBookedMeetings">
+                            <li class="list-group-item">
+                                <b>@context.MeetingStart.ToShortDateString()</b> @context.MeetingStart.ToShortTimeString() - @context.MeetingEnd.ToShortTimeString()
+                            </li>
+                        </Virtualize>
                     </ul>
                 </CardBody>
 
@@ -130,6 +133,26 @@
 @code {
     string _meetingLink = string.Empty;
 
+    string CreateMeetingParticipantString(Meeting meeting)
+    {
+        string output = string.Empty;
+        if (meeting.Parents!.Count > 1)
+        {
+            output = $"{meeting.Parents[0].Name} & {meeting.Parents[1].Name}";
+        }
+        else
+        {
+            output = meeting.Parents[0].Name;
+        }
+
+        if (!string.IsNullOrWhiteSpace(meeting.StudentName))
+        {
+            output += $" ({meeting.StudentName})";
+        }
+
+        return output;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -143,6 +166,8 @@
         ViewModel.LoggedInTeacherEmail = await Acct.GetUserEmailAsync();
 
         _meetingLink = $"https://localhost:7073/book-meeting/{ViewModel.LoggedInTeacherEmail}/meetings";
+
+        await ViewModel.FetchMeetingsByTeacher(ViewModel.LoggedInTeacherEmail);
 
         await ViewModel.GenerateMonth(0);
 
