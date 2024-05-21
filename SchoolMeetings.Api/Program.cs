@@ -74,6 +74,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapAllEndPoints();
+app.MapEmailEndPoints(builder);
 
 
 
