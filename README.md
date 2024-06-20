@@ -10,9 +10,6 @@ I mitt förra yrkesliv var jag lärare i årskurserna 4-6. Bland mina otaliga ar
     Asp.net core
   </li>
   <li>
-    Minimal API
-  </li>
-  <li>
     Microsoft SQL-server
   </li>
   <li>
