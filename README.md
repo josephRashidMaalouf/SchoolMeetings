@@ -3,7 +3,7 @@
 I mitt förra yrkesliv var jag lärare i årskurserna 4-6. Bland mina otaliga arbetsuppgifter var utvecklingssamtal ett av dessa. Att kontakta vårdnadshavare för att boka utvecklingssamtalstider är något som kan ta mycket tid, men med ett bokningsverktyg till hands går det snabbt och smidigt både för lärare och vårdnadshavare. Denna webbapp syftar till fungera som ett bokningssystem som lärare kan använda för att lägga ut tillgängliga tider, som vårdnadshavare med en separat länk kan boka in sig på.
 ## Bilder
 
-<img src="image.png" width="200">
+<img src="./Screenshots/Landing%20page.png" width="200">
 
 ## Tech-stack
 <ul>
